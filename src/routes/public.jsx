@@ -1,5 +1,7 @@
 import { Navigate, useRoutes } from 'react-router-dom'
 import HomePage from '../pages/HomePage'
+import UsersPage from '../pages/UsersPage'
+import BasicLayout from '../layouts/BasicLayout'
 
 export const publicRoutes = [
   // {
@@ -22,8 +24,22 @@ export const publicRoutes = [
   // },
   {
     path: '/',
-    element: <HomePage />
+    element: <BasicLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />
+      },
+      {
+        path: '/users',
+        element: <UsersPage />
+      }
+    ]
   },
+  // {
+  //   path: '/users',
+  //   element: <UsersPage />
+  // },
   {
     path: '*',
     element: <Navigate to='/' />
