@@ -1,0 +1,16 @@
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 300px;
+  margin: auto;
+  border-radius: 10px;
+
+  .MuiTextField-root {
+    margin-bottom: 1rem;
+  }
+
+  .MuiButton-root {
+    margin-top: 1rem;
+  }
+}

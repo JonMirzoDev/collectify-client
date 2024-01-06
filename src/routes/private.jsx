@@ -1,15 +1,24 @@
 /* eslint-disable no-unused-vars */
 import { Navigate, useRoutes } from 'react-router-dom'
+import BasicLayout from '../layouts/BasicLayout'
+import HomePage from '../pages/HomePage'
+import UsersPage from '../pages/UsersPage'
 
 export const privateRoutes = [
-  // {
-  //   path: '/users',
-  //   element: <Users />
-  // },
-  // {
-  //   path: '*',
-  //   element: <Navigate to='/users' />
-  // }
+  {
+    path: '/',
+    element: <BasicLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />
+      },
+      {
+        path: '/users',
+        element: <UsersPage />
+      }
+    ]
+  }
 ]
 
 const PrivateRoutes = () => {
