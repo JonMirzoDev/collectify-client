@@ -1,0 +1,11 @@
+.homePageContainer {
+  padding: 2rem;
+  min-height: calc(100vh - 64px);
+  margin-top: 4rem;
+
+  .welcomeMessage {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #1976d2;
+  }
+}

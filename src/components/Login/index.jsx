@@ -5,8 +5,8 @@ import styles from './style.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLoginMutation } from '../../services/auth.service'
 import { useDispatch } from 'react-redux'
-import {LoadingButton} from '@mui/lab'
-import { login } from '../../store/auth/auth.slice'
+import { LoadingButton } from '@mui/lab'
+import { login, setUser } from '../../store/auth/auth.slice'
 
 const Login = () => {
   const {
@@ -24,6 +24,7 @@ const Login = () => {
       onSuccess: (res) => {
         console.log('res: ', res)
         dispatch(login(res.access_token))
+        dispatch(setUser(res.user))
         reset()
         navigate('/')
       },

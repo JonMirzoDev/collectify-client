@@ -1,0 +1,43 @@
+.navigationBar {
+  background-color: #1A237E; // A darker shade for the AppBar
+  color: #E8EAF6; // A lighter shade for text for contrast
+  box-shadow: none;
+  border-bottom: 3px solid #5C6BC0; // A complementing border color
+  padding: 0.5rem 0; // Giving some vertical padding to the AppBar
+  .MuiToolbar-root {
+    // You might need to ensure Material-UI classes are targetable
+    padding: 0 2rem; // Horizontal padding for desktop screens
+  }
+}
+
+.title {
+  flex-grow: 1;
+  color: inherit; // Ensure the title uses the AppBar text color
+  font-weight: 600; // A bolder weight for the title
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline; // An indication of interactivity
+  }
+}
+
+.button {
+  color: inherit !important; // Use the AppBar text color
+  font-weight: bold;
+  margin-left: 1rem; // Spacing between buttons
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2); // A lighter hover state
+  }
+}
+
+.header {
+  width: 100%;
+  text-align: center;
+  margin-top: -4rem; // Adjust this value to suit the height of your AppBar
+  padding: 1rem 0; // Add some vertical padding to the header
+  background-color: #3F51B5; // A lighter shade than the AppBar for contrast
+  color: #fff; // White color for the text
+  h1 {
+    margin: 0; // Remove default margin from the h1
+    font-weight: 700; // Bold font-weight for h1
+  }
+}

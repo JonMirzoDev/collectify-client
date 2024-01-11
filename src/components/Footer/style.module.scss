@@ -1,9 +1,39 @@
 .footer {
-  padding: 20px;
+  padding: 1rem;
   text-align: center;
-  background-color: #1976d2;
-  color: white;
-  position: absolute;
-  bottom: 0;
+  background-color: #1976d2; // A deep blue shade for the background
+  color: #fff; // White text for better readability
   width: 100%;
+
+  // If your footer doesn't need to be always at the bottom of the screen
+  // avoid using `position: absolute;` to prevent layout issues.
+  // Instead, let it flow naturally at the bottom of your content.
+
+  // Ensure the footer is at the bottom even when the content is short
+  @media (min-height: 100vh) {
+    position: relative;
+    margin-top: auto;
+  }
+  
+  // If you want the footer to be visible at all times at the bottom of the screen,
+  // comment out the above media query and uncomment the following line.
+  // position: sticky;
+  // bottom: 0;
+
+  // Add responsive behavior
+  @media (max-width: 768px) {
+    padding: 0.5rem; // Less padding on smaller screens
+  }
+
+  // A subtle shadow on top to lift the footer off the rest of the content
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+
+  // If you have multiple items in your footer, you might want to style them as well
+  .footer-item {
+    padding: 0.5rem;
+    color: #fff;
+    &:hover {
+      color: #bbdefb; // A lighter shade of blue for hover state
+    }
+  }
 }
