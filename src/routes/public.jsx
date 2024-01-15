@@ -1,25 +1,12 @@
 import { Navigate, useRoutes } from 'react-router-dom'
-import HomePage from '../pages/HomePage'
-import UsersPage from '../pages/UsersPage'
-import BasicLayout from '../layouts/BasicLayout'
 import AuthLayout from '../layouts/AuthLayout'
 import Login from '../components/Login'
 import Register from '../components/Register'
+import commonRoutes from './common'
 
 export const publicRoutes = [
   {
-    path: '/',
-    element: <BasicLayout />,
-    children: [
-      {
-        index: true,
-        element: <HomePage />
-      },
-      {
-        path: '/users',
-        element: <UsersPage />
-      }
-    ]
+    ...commonRoutes
   },
   {
     path: '/auth',

@@ -1,9 +1,19 @@
-// src/collections/CollectionList/style.module.scss
 .collectionListContainer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
   padding: 20px;
+}
+
+.createButton {
+  grid-column: span 2;
+  margin: 20px;
+  margin-bottom: 40px;
+  max-width: 250px;
+  background-color: #4caf50;
+  &:hover {
+    background-color: #388e3c;
+  }
 }
 
 .card {

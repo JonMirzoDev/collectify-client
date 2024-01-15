@@ -3,31 +3,29 @@ import {
   useCollectionsQuery,
   useDeleteCollection
 } from '../../../services/collection.service'
-import {
-  Card,
-  CardContent,
-  Typography,
-  IconButton,
-  Button
-} from '@mui/material'
+import { Button, Card, CardContent, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import styles from './style.module.scss'
 import { useQueryClient } from 'react-query'
 import { LoadingButton } from '@mui/lab'
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
+import AddIcon from '@mui/icons-material/Add'
+import { useSelector } from 'react-redux'
 
 const CollectionList = ({ userId }) => {
   const { data: collections, isLoading } = useCollectionsQuery()
   const { mutate: deleteCollection, isLoading: isDeleting } =
     useDeleteCollection()
+  const { isAuth } = useSelector((store) => store.auth)
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   console.log('collections: ', collections)
 
   if (isLoading) return <div>Loading...</div>
 
-  const handleDelete = (id) => {
+  const handleDelete = (id, e) => {
+    e.stopPropagation()
     if (!isDeleting)
       deleteCollection(id, {
         onSuccess: (res) => {
@@ -40,14 +38,36 @@ const CollectionList = ({ userId }) => {
       })
   }
 
-  const handleUpdate = (id) => {
+  const handleUpdate = (id, e) => {
+    e.stopPropagation()
     navigate(`/collections/update/${id}`)
+  }
+
+  const handleCollectionClick = (id) => navigate(`/collections/${id}`)
+
+  const handleCreateNew = () => {
+    navigate('/collections/create')
   }
 
   return (
     <div className={styles.collectionListContainer}>
+      {isAuth && (
+        <Button
+          variant='contained'
+          color='primary'
+          startIcon={<AddIcon />}
+          onClick={handleCreateNew}
+          className={styles.createButton}
+        >
+          Create Collection
+        </Button>
+      )}
       {collections?.map((collection) => (
-        <Card key={collection.id} className={styles.card}>
+        <Card
+          key={collection.id}
+          className={styles.card}
+          onClick={() => handleCollectionClick(collection?.id)}
+        >
           {collection.image && (
             <div
               className={styles.cardImage}
@@ -66,7 +86,7 @@ const CollectionList = ({ userId }) => {
               <div className={styles.actions}>
                 <LoadingButton
                   loading={isDeleting}
-                  onClick={() => handleDelete(collection?.id)}
+                  onClick={(e) => handleDelete(collection?.id, e)}
                   startIcon={<DeleteIcon />}
                   aria-label='delete'
                 >
@@ -76,7 +96,7 @@ const CollectionList = ({ userId }) => {
                 <LoadingButton
                   variant='text'
                   startIcon={<EditIcon />}
-                  onClick={() => handleUpdate(collection.id)}
+                  onClick={(e) => handleUpdate(collection.id, e)}
                   className={styles.updateButton}
                 >
                   Update
