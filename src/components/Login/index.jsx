@@ -29,7 +29,7 @@ const Login = () => {
         navigate('/')
       },
       onError: (err) => {
-        console.log('register err: ', err)
+        console.log('login err: ', err)
       }
     })
   }

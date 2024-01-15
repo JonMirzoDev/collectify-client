@@ -1,0 +1,36 @@
+.container {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.paper {
+  margin-top: 2rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  margin-bottom: 1rem;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.textField {
+  background: #fff;
+  .MuiOutlinedInput-root {
+    border-radius: 4px;
+  }
+}
+
+.submitButton {
+  margin-top: 20px;
+  font-size: 1rem;
+}

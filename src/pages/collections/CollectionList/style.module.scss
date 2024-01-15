@@ -42,3 +42,18 @@
     color: #666;
   }
 }
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.updateButton {
+  background-color: #4caf50;
+  &:hover {
+    background-color: #388e3c;
+  }
+}

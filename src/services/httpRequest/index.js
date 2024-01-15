@@ -10,7 +10,7 @@ const httpRequest = axios.create({
 
 const errorHandler = (error) => {
   console.log('errorrrrr: ', error)
-  const message = error?.response?.data || 'An error occurred'
+  const message = error?.response?.data?.message || 'An error occurred'
 
   let toastStyle = {
     fontSize: '1.25rem',

@@ -10,7 +10,7 @@ export default function HomePage() {
       <div className={styles.welcomeMessage}>
         Welcome to HomePage, {user ? user.username : 'Guest'}
       </div>
-      <CollectionList />
+      <CollectionList userId={user?.id} />
     </div>
   )
 }

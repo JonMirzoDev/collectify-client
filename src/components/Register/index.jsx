@@ -44,6 +44,7 @@ const Register = () => {
       />
       <TextField
         label='Email'
+        type='email'
         variant='outlined'
         {...register('email', { required: true })}
         error={!!errors.email}
