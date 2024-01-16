@@ -1,0 +1,40 @@
+// style.module.scss
+.itemsList {
+  margin-top: 2rem;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+
+  .MuiListItem-root {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #e0e0e0;
+    }
+  }
+
+  .MuiListItemText-primary {
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
+    &:hover {
+      color: #1976d2;
+    }
+  }
+
+  .MuiListItemText-secondary {
+    color: #666;
+  }
+
+  .MuiIconButton-root {
+    margin-left: 8px;
+  }
+}
+
+.progress {
+  display: block;
+  margin: 2rem auto;
+}

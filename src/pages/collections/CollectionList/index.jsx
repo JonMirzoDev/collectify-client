@@ -22,8 +22,6 @@ const CollectionList = ({ userId }) => {
   const queryClient = useQueryClient()
   console.log('collections: ', collections)
 
-  if (isLoading) return <div>Loading...</div>
-
   const handleDelete = (id, e) => {
     e.stopPropagation()
     if (!isDeleting)
@@ -49,6 +47,8 @@ const CollectionList = ({ userId }) => {
     navigate('/collections/create')
   }
 
+  if (isLoading) return <div>Loading...</div>
+  
   return (
     <div className={styles.collectionListContainer}>
       {isAuth && (

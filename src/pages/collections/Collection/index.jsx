@@ -1,6 +1,6 @@
-import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useCollection } from '../../../services/collection.service'
+import { useItems } from '../../../services/item.service'
 import {
   Box,
   Card,
@@ -10,11 +10,18 @@ import {
   Container
 } from '@mui/material'
 import styles from './style.module.scss'
+import ItemsList from '../../../components/Items/ItemsList'
+import { useSelector } from 'react-redux'
 
 const Collection = () => {
   const { id } = useParams()
+  const { isAuth, user } = useSelector((store) => store.auth)
   const { data: collection, isLoading } = useCollection({ id })
-  console.log('collection: ', collection)
+  const { data: items, isLoading: isItemsLoading } = useItems({
+    collectionId: id
+  })
+  const isOwner = isAuth && user.id === collection?.userId
+  console.log('items: ', isOwner)
 
   if (isLoading) {
     return (
@@ -56,6 +63,12 @@ const Collection = () => {
           )}
         </CardContent>
       </Card>
+      <Typography variant='h5'>Items in collection</Typography>
+      {isItemsLoading ? (
+        <CircularProgress className={styles.progress} />
+      ) : (
+        <ItemsList isOwner={isOwner} items={items} loading={isItemsLoading} />
+      )}
     </Container>
   )
 }
