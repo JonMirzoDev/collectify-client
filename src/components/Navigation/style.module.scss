@@ -1,43 +1,54 @@
 .navigationBar {
-  background-color: #1A237E; // A darker shade for the AppBar
-  color: #E8EAF6; // A lighter shade for text for contrast
+  background-color: #1a237e;
+  color: #e8eaf6;
   box-shadow: none;
-  border-bottom: 3px solid #5C6BC0; // A complementing border color
-  padding: 0.5rem 0; // Giving some vertical padding to the AppBar
+  border-bottom: 3px solid #5c6bc0;
+  padding: 0.5rem 0;
   .MuiToolbar-root {
-    // You might need to ensure Material-UI classes are targetable
-    padding: 0 2rem; // Horizontal padding for desktop screens
+    padding: 0 2rem;
   }
 }
 
 .title {
   flex-grow: 1;
-  color: inherit; // Ensure the title uses the AppBar text color
-  font-weight: 600; // A bolder weight for the title
+  color: inherit;
+  font-weight: 600;
   cursor: pointer;
   &:hover {
-    text-decoration: underline; // An indication of interactivity
+    text-decoration: underline;
   }
 }
 
 .button {
-  color: inherit !important; // Use the AppBar text color
+  color: inherit !important;
   font-weight: bold;
-  margin-left: 1rem; // Spacing between buttons
+  margin-left: 1rem;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2); // A lighter hover state
+    background-color: rgba(255, 255, 255, 0.2);
   }
 }
 
 .header {
   width: 100%;
   text-align: center;
-  margin-top: -4rem; // Adjust this value to suit the height of your AppBar
-  padding: 1rem 0; // Add some vertical padding to the header
-  background-color: #3F51B5; // A lighter shade than the AppBar for contrast
-  color: #fff; // White color for the text
+  margin-top: -4rem;
+  padding: 1rem 0;
+  background-color: #3f51b5;
+  color: #fff;
   h1 {
-    margin: 0; // Remove default margin from the h1
-    font-weight: 700; // Bold font-weight for h1
+    margin: 0;
+    font-weight: 700;
   }
+}
+
+.logoBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgb(5, 62, 148);
+  gap: 5px;
+  margin-right: 10px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }

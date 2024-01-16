@@ -7,5 +7,10 @@
     font-size: 2rem;
     margin-bottom: 1.5rem;
     color: #1976d2;
+
+    span {
+      font-weight: bold;
+      cursor: pointer;
+    }
   }
 }

@@ -6,11 +6,13 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../../store/auth/auth.slice'
 import styles from './style.module.scss'
+import { Box } from '@mui/material'
+import { AccountCircle } from '@mui/icons-material'
 
 const Navigation = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { isAuth } = useSelector((store) => store.auth)
+  const { isAuth, user } = useSelector((store) => store.auth)
   const handleLogout = () => dispatch(logout())
 
   return (
@@ -32,9 +34,21 @@ const Navigation = () => {
             Login
           </Button>
         ) : (
-          <Button className={styles.button} onClick={handleLogout}>
-            Logout
-          </Button>
+          <>
+            <Box
+              aria-label='account of current user'
+              aria-haspopup='true'
+              onClick={() => navigate('/user')}
+              color='inherit'
+              className={styles.logoBtn}
+            >
+              <AccountCircle />
+              <span>{user.username}</span>
+            </Box>
+            <Button className={styles.button} onClick={handleLogout}>
+              Logout
+            </Button>
+          </>
         )}
       </Toolbar>
       <header className={styles.header}>

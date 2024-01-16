@@ -3,6 +3,7 @@ import { Navigate, useRoutes } from 'react-router-dom'
 import CreateCollection from '../pages/collections/CreateCollection'
 import UpdateCollectionPage from '../pages/collections/UpdateCollection'
 import commonRoutes from './common'
+import UserPage from '../pages/UserPage'
 
 export const privateRoutes = [
   {
@@ -20,6 +21,10 @@ export const privateRoutes = [
         element: <UpdateCollectionPage />
       }
     ]
+  },
+  {
+    path: '/user',
+    element: <UserPage />
   }
 ]
 
