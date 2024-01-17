@@ -5,9 +5,7 @@ import Register from '../components/Register'
 import commonRoutes from './common'
 
 export const publicRoutes = [
-  {
-    ...commonRoutes
-  },
+  ...commonRoutes,
   {
     path: '/auth',
     element: <AuthLayout />,

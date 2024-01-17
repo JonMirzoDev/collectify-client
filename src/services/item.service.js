@@ -4,7 +4,11 @@ import httpRequest from './httpRequest/index'
 const itemService = {
   getItems: async (collectionId) =>
     httpRequest.get(`items?collectionId=${collectionId}`),
-  create: async (data) => httpRequest.post('items', data)
+  getItem: async (itemId) => httpRequest.get(`items/${itemId}`),
+  delete: async (itemId) => httpRequest.delete(`items/${itemId}`),
+  create: async (data) => httpRequest.post('items', data),
+  update: async (data) =>
+    httpRequest.put(`items/${data.itemId}`, data.updatedData)
 }
 
 export const useItems = ({ collectionId }) => {
@@ -17,6 +21,20 @@ export const useItems = ({ collectionId }) => {
   )
 }
 
+export const useItem = ({ itemId }) => {
+  return useQuery(`item-${itemId}`, () => itemService.getItem(itemId), {
+    enabled: !!itemId
+  })
+}
+
 export const useCreateItem = (mutationSettings) => {
   return useMutation(itemService.create, mutationSettings)
+}
+
+export const useDeleteItem = (mutationSettings) => {
+  return useMutation(itemService.delete, mutationSettings)
+}
+
+export const useUpdateItem = (mutationSettings) => {
+  return useMutation(itemService.update, mutationSettings)
 }

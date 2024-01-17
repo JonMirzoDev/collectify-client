@@ -84,7 +84,12 @@ const Collection = () => {
       {isItemsLoading ? (
         <CircularProgress className={styles.progress} />
       ) : (
-        <ItemsList isOwner={isOwner} items={items} loading={isItemsLoading} />
+        <ItemsList
+          isOwner={isOwner}
+          items={items}
+          loading={isItemsLoading}
+          collectionId={id}
+        />
       )}
     </Container>
   )

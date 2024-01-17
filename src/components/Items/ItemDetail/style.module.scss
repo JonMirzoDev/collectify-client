@@ -1,0 +1,26 @@
+.itemView {
+  margin: auto;
+  max-width: 800px;
+  padding: 20px;
+
+  .MuiCard-root {
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    .MuiCardContent-root {
+      .MuiTypography-h5 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .MuiTypography-body1 {
+        color: #555;
+        margin-bottom: 20px;
+      }
+
+      .MuiChip-root {
+        margin: 5px;
+      }
+    }
+  }
+}

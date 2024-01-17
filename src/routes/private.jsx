@@ -5,11 +5,10 @@ import UpdateCollectionPage from '../pages/collections/UpdateCollection'
 import commonRoutes from './common'
 import UserPage from '../pages/UserPage'
 import AddItem from '../components/Items/AddItem'
+import EditItem from '../components/Items/EditItem'
 
 export const privateRoutes = [
-  {
-    ...commonRoutes
-  },
+  ...commonRoutes,
   {
     path: '/collections',
     children: [
@@ -30,6 +29,10 @@ export const privateRoutes = [
   {
     path: '/user',
     element: <UserPage />
+  },
+  {
+    path: 'collections/:collectionId/items/edit/:itemId',
+    element: <EditItem />
   }
 ]
 
