@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useCollection } from '../../../services/collection.service'
 import { useItems } from '../../../services/item.service'
 import {
@@ -7,7 +7,8 @@ import {
   CardContent,
   Typography,
   CircularProgress,
-  Container
+  Container,
+  Button
 } from '@mui/material'
 import styles from './style.module.scss'
 import ItemsList from '../../../components/Items/ItemsList'
@@ -21,7 +22,7 @@ const Collection = () => {
     collectionId: id
   })
   const isOwner = isAuth && user.id === collection?.userId
-  console.log('items: ', isOwner)
+  const navigate = useNavigate()
 
   if (isLoading) {
     return (
@@ -34,6 +35,10 @@ const Collection = () => {
         <CircularProgress />
       </Box>
     )
+  }
+
+  const handleAddItem = () => {
+    navigate(`/collections/${id}/add-item`)
   }
 
   if (!collection) {
@@ -63,7 +68,19 @@ const Collection = () => {
           )}
         </CardContent>
       </Card>
-      <Typography variant='h5'>Items in collection</Typography>
+      <Box display='flex' justifyContent='space-between'>
+        <Typography variant='h5'>Collection Items </Typography>
+        {isOwner && (
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={handleAddItem}
+            className={styles.addButton}
+          >
+            Add Item
+          </Button>
+        )}
+      </Box>
       {isItemsLoading ? (
         <CircularProgress className={styles.progress} />
       ) : (

@@ -3,8 +3,8 @@ import httpRequest from './httpRequest/index'
 
 const itemService = {
   getItems: async (collectionId) =>
-    httpRequest.get(`items?collectionId=${collectionId}`)
-  // update: async (data) => httpRequest.put(`collections/${data.id}`, data.data)
+    httpRequest.get(`items?collectionId=${collectionId}`),
+  create: async (data) => httpRequest.post('items', data)
 }
 
 export const useItems = ({ collectionId }) => {
@@ -17,6 +17,6 @@ export const useItems = ({ collectionId }) => {
   )
 }
 
-// export const useUpdateCollection = (mutationSettings) => {
-//   return useMutation(itemService.update, mutationSettings)
-// }
+export const useCreateItem = (mutationSettings) => {
+  return useMutation(itemService.create, mutationSettings)
+}

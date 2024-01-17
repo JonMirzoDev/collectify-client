@@ -4,6 +4,7 @@ import CreateCollection from '../pages/collections/CreateCollection'
 import UpdateCollectionPage from '../pages/collections/UpdateCollection'
 import commonRoutes from './common'
 import UserPage from '../pages/UserPage'
+import AddItem from '../components/Items/AddItem'
 
 export const privateRoutes = [
   {
@@ -19,6 +20,10 @@ export const privateRoutes = [
       {
         path: 'update/:id',
         element: <UpdateCollectionPage />
+      },
+      {
+        path: ':id/add-item',
+        element: <AddItem />
       }
     ]
   },
