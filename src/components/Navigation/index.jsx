@@ -8,6 +8,7 @@ import { logout } from '../../store/auth/auth.slice'
 import styles from './style.module.scss'
 import { Box } from '@mui/material'
 import { AccountCircle } from '@mui/icons-material'
+import SearchBar from '../SearchBar'
 
 const Navigation = () => {
   const navigate = useNavigate()
@@ -24,36 +25,40 @@ const Navigation = () => {
           className={styles.title}
           onClick={() => navigate('/')}
         >
-          Your App
+          Collectify
         </Typography>
-        {!isAuth ? (
-          <Button
-            className={styles.button}
-            onClick={() => navigate('/auth/login')}
-          >
-            Login
-          </Button>
-        ) : (
-          <>
-            <Box
-              aria-label='account of current user'
-              aria-haspopup='true'
-              onClick={() => navigate('/user')}
-              color='inherit'
-              className={styles.logoBtn}
+
+        <div className={styles.searchContainer}>
+          <SearchBar />
+        </div>
+
+        <div className={styles.authSection}>
+          {!isAuth ? (
+            <Button
+              className={styles.button}
+              onClick={() => navigate('/auth/login')}
             >
-              <AccountCircle />
-              <span>{user.username}</span>
-            </Box>
-            <Button className={styles.button} onClick={handleLogout}>
-              Logout
+              Login
             </Button>
-          </>
-        )}
+          ) : (
+            <>
+              <Box
+                aria-label='account of current user'
+                aria-haspopup='true'
+                onClick={() => navigate('/user')}
+                color='inherit'
+                className={styles.logoBtn}
+              >
+                <AccountCircle />
+                <span className={styles.username}>{user.username}</span>
+              </Box>
+              <Button className={styles.button} onClick={handleLogout}>
+                Logout
+              </Button>
+            </>
+          )}
+        </div>
       </Toolbar>
-      <header className={styles.header}>
-        <h1>Collectify</h1>
-      </header>
     </AppBar>
   )
 }

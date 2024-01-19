@@ -24,6 +24,15 @@ const ItemDetail = () => {
 
   return (
     <Box className={styles.itemView} marginTop={10}>
+      <Typography
+        marginBottom={2}
+        textAlign='center'
+        fontSize={36}
+        fontWeight={540}
+        fontFamily='fantasy'
+      >
+        Item details
+      </Typography>
       <Card variant='outlined'>
         <CardContent>
           <Typography variant='h5' component='h2'>
