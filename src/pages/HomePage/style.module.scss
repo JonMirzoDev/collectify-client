@@ -1,12 +1,12 @@
 .homePageContainer {
-  padding: 2rem;
   min-height: calc(100vh - 64px);
-  margin-top: 4rem;
+  margin-top: 20px;
 
   .welcomeMessage {
     font-size: 2rem;
     margin-bottom: 1.5rem;
     color: #1976d2;
+    text-align: center;
 
     span {
       font-weight: bold;

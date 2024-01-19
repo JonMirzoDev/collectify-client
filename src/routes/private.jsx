@@ -6,33 +6,40 @@ import commonRoutes from './common'
 import UserPage from '../pages/UserPage'
 import AddItem from '../components/Items/AddItem'
 import EditItem from '../components/Items/EditItem'
+import BasicLayout from '../layouts/BasicLayout'
 
 export const privateRoutes = [
   ...commonRoutes,
   {
-    path: '/collections',
+    path: '/',
+    element: <BasicLayout />,
     children: [
       {
-        path: 'create',
-        element: <CreateCollection />
+        path: 'collections',
+        children: [
+          {
+            path: 'create',
+            element: <CreateCollection />
+          },
+          {
+            path: 'update/:id',
+            element: <UpdateCollectionPage />
+          },
+          {
+            path: ':id/add-item',
+            element: <AddItem />
+          }
+        ]
       },
       {
-        path: 'update/:id',
-        element: <UpdateCollectionPage />
+        path: '/user',
+        element: <UserPage />
       },
       {
-        path: ':id/add-item',
-        element: <AddItem />
+        path: 'collections/:collectionId/items/edit/:itemId',
+        element: <EditItem />
       }
     ]
-  },
-  {
-    path: '/user',
-    element: <UserPage />
-  },
-  {
-    path: 'collections/:collectionId/items/edit/:itemId',
-    element: <EditItem />
   }
 ]
 

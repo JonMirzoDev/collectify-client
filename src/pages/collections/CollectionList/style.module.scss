@@ -7,12 +7,9 @@
 
 .createButton {
   grid-column: span 2;
-  margin: 20px;
-  margin-bottom: 40px;
-  max-width: 250px;
-  background-color: #4caf50;
+  margin: 20px !important;
+  max-width: 250px !important;
   &:hover {
-    background-color: #388e3c;
   }
 }
 
@@ -59,11 +56,4 @@
   align-items: center;
   margin-top: 1rem;
   gap: 1rem;
-}
-
-.updateButton {
-  background-color: #4caf50;
-  &:hover {
-    background-color: #388e3c;
-  }
 }

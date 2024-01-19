@@ -3,7 +3,7 @@ import {
   useCollectionsQuery,
   useDeleteCollection
 } from '../../../services/collection.service'
-import { Button, Card, CardContent, Typography } from '@mui/material'
+import { Button, Card, CardContent, Container, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import styles from './style.module.scss'
@@ -48,9 +48,9 @@ const CollectionList = ({ userId }) => {
   }
 
   if (isLoading) return <div>Loading...</div>
-  
+
   return (
-    <div className={styles.collectionListContainer}>
+    <>
       {isAuth && (
         <Button
           variant='contained'
@@ -62,51 +62,53 @@ const CollectionList = ({ userId }) => {
           Create Collection
         </Button>
       )}
-      {collections?.map((collection) => (
-        <Card
-          key={collection.id}
-          className={styles.card}
-          onClick={() => handleCollectionClick(collection?.id)}
-        >
-          {collection.image && (
-            <div
-              className={styles.cardImage}
-              style={{ backgroundImage: `url(${collection.image})` }}
-            />
-          )}
-          <CardContent className={styles.cardContent}>
-            <Typography variant='h5' component='div' className={styles.title}>
-              {collection.name}
-            </Typography>
-            <Typography className={styles.description} color='text.secondary'>
-              {collection.description}
-            </Typography>
-
-            {userId && userId === collection?.userId && (
-              <div className={styles.actions}>
-                <LoadingButton
-                  loading={isDeleting}
-                  onClick={(e) => handleDelete(collection?.id, e)}
-                  startIcon={<DeleteIcon />}
-                  aria-label='delete'
-                >
-                  Delete
-                </LoadingButton>
-
-                <LoadingButton
-                  variant='text'
-                  startIcon={<EditIcon />}
-                  onClick={(e) => handleUpdate(collection.id, e)}
-                  className={styles.updateButton}
-                >
-                  Update
-                </LoadingButton>
-              </div>
+      <div className={styles.collectionListContainer}>
+        {collections?.map((collection) => (
+          <Card
+            key={collection.id}
+            className={styles.card}
+            onClick={() => handleCollectionClick(collection?.id)}
+          >
+            {collection.image && (
+              <div
+                className={styles.cardImage}
+                style={{ backgroundImage: `url(${collection.image})` }}
+              />
             )}
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+            <CardContent className={styles.cardContent}>
+              <Typography variant='h5' component='div' className={styles.title}>
+                {collection.name}
+              </Typography>
+              <Typography className={styles.description} color='text.secondary'>
+                {collection.description}
+              </Typography>
+
+              {userId && userId === collection?.userId && (
+                <div className={styles.actions}>
+                  <LoadingButton
+                    loading={isDeleting}
+                    onClick={(e) => handleDelete(collection?.id, e)}
+                    startIcon={<DeleteIcon />}
+                    aria-label='delete'
+                  >
+                    Delete
+                  </LoadingButton>
+
+                  <LoadingButton
+                    variant='text'
+                    startIcon={<EditIcon />}
+                    onClick={(e) => handleUpdate(collection.id, e)}
+                    className={styles.updateButton}
+                  >
+                    Update
+                  </LoadingButton>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </>
   )
 }
 

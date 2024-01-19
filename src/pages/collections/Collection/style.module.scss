@@ -1,47 +1,65 @@
 .container {
-  padding-top: 4rem;
-  display: flex;
-  justify-content: center;
-}
-
-.card {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
   padding: 2rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  transition: box-shadow 0.3s ease-in-out;
-
-  &:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-  }
 }
 
-.title {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.description {
-  font-size: 1.2rem;
-  color: #666;
+.collectionDetails {
+  text-align: center;
   margin-bottom: 2rem;
 }
 
-.topic {
-  display: block;
-  background: #e0e0e0;
-  border-radius: 10px;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
+.collectionImage {
+  max-width: 60%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem; // Space below the image
 }
 
-.image {
-  max-width: 100%;
-  border-radius: 10px;
-  margin-top: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+.collectionText {
+  margin-bottom: 1rem; // Space between text elements
 }
 
 .addButton {
-  margin: 1rem 0;
+  background-color: #1976d2; // Use a theme color for the button
+  color: white;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  border-radius: 20px; // More pronounced rounded corners
+  margin-bottom: 2rem;
+  &:hover {
+    background-color: #115293; // Darken on hover for interaction feedback
+  }
+}
+
+.itemsList {
+  padding: 0; // Remove default padding
+  margin: 2rem 0; // Space above and below the list
+}
+
+.itemEntry {
+  display: flex; // Use flexbox for alignment
+  align-items: center; // Center-align the items vertically
+  justify-content: space-between; // Space out the item and action button
+  padding: 1rem 0; // Spacing inside each item entry
+  border-bottom: 1px solid #eee; // Separator between items
+  transition: background-color 0.3s; // Smooth transition for hover effect
+
+  &:hover {
+    background-color: #f9f9f9; // Highlight on hover
+  }
+}
+
+.progress {
+  display: block; // Make the progress indicator a block element
+  margin: 2rem auto; // Center it horizontally
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem; // Less padding on smaller screens
+  }
+
+  .collectionImage {
+    margin-top: 2rem; // More space from the top element
+  }
 }

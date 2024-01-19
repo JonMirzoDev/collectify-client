@@ -47,29 +47,28 @@ const Collection = () => {
 
   return (
     <Container maxWidth='md' className={styles.container}>
-      <Card className={styles.card}>
-        <CardContent>
-          <Typography variant='h4' component='h2' className={styles.title}>
-            {collection.name}
-          </Typography>
-          <Typography variant='body1' className={styles.description}>
-            {collection.description}
-          </Typography>
-          <Typography variant='overline' className={styles.topic}>
-            Topic: {collection.topic}
-          </Typography>
-          {collection.image && (
-            <Box
-              component='img'
-              src={collection.image}
-              alt={collection.name}
-              className={styles.image}
-            />
-          )}
-        </CardContent>
-      </Card>
-      <Box display='flex' justifyContent='space-between'>
-        <Typography variant='h5'>Collection Items </Typography>
+      <div className={styles.collectionDetails}>
+        {collection.image && (
+          <Box
+            component='img'
+            src={collection.image}
+            alt={collection.name}
+            className={styles.collectionImage}
+          />
+        )}
+        <Typography
+          variant='h4'
+          component='h2'
+          className={styles.collectionText}
+        >
+          {collection.name}
+        </Typography>
+        <Typography variant='body1' className={styles.collectionText}>
+          {collection.description}
+        </Typography>
+        <Typography variant='overline' className={styles.collectionText}>
+          Topic: {collection.topic}
+        </Typography>
         {isOwner && (
           <Button
             variant='contained'
@@ -80,7 +79,10 @@ const Collection = () => {
             Add Item
           </Button>
         )}
-      </Box>
+      </div>
+      <Typography variant='h5' className={styles.collectionText}>
+        Collection Items
+      </Typography>
       {isItemsLoading ? (
         <CircularProgress className={styles.progress} />
       ) : (
