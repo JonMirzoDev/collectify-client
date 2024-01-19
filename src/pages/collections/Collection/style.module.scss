@@ -12,54 +12,54 @@
   height: auto;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-bottom: 1rem; // Space below the image
+  margin-bottom: 1rem;
 }
 
 .collectionText {
-  margin-bottom: 1rem; // Space between text elements
+  margin-bottom: 1rem;
 }
 
 .addButton {
-  background-color: #1976d2; // Use a theme color for the button
+  background-color: #1976d2;
   color: white;
   padding: 10px 20px;
   font-size: 0.9rem;
-  border-radius: 20px; // More pronounced rounded corners
+  border-radius: 20px;
   margin-bottom: 2rem;
   &:hover {
-    background-color: #115293; // Darken on hover for interaction feedback
+    background-color: #115293;
   }
 }
 
 .itemsList {
-  padding: 0; // Remove default padding
-  margin: 2rem 0; // Space above and below the list
+  padding: 0;
+  margin: 2rem 0;
 }
 
 .itemEntry {
-  display: flex; // Use flexbox for alignment
-  align-items: center; // Center-align the items vertically
-  justify-content: space-between; // Space out the item and action button
-  padding: 1rem 0; // Spacing inside each item entry
-  border-bottom: 1px solid #eee; // Separator between items
-  transition: background-color 0.3s; // Smooth transition for hover effect
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.3s;
 
   &:hover {
-    background-color: #f9f9f9; // Highlight on hover
+    background-color: #f9f9f9;
   }
 }
 
 .progress {
-  display: block; // Make the progress indicator a block element
-  margin: 2rem auto; // Center it horizontally
+  display: block;
+  margin: 2rem auto;
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 1rem; // Less padding on smaller screens
+    padding: 1rem;
   }
 
   .collectionImage {
-    margin-top: 2rem; // More space from the top element
+    margin-top: 2rem;
   }
 }
