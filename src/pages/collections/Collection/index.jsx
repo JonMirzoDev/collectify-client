@@ -3,8 +3,6 @@ import { useCollection } from '../../../services/collection.service'
 import { useItems } from '../../../services/item.service'
 import {
   Box,
-  Card,
-  CardContent,
   Typography,
   CircularProgress,
   Container,
@@ -69,6 +67,11 @@ const Collection = () => {
         <Typography variant='overline' className={styles.collectionText}>
           Topic: {collection.topic}
         </Typography>
+      </div>
+      <Box display='flex' justifyContent='space-between'>
+        <Typography variant='h5' className={styles.collectionText}>
+          Collection Items
+        </Typography>
         {isOwner && (
           <Button
             variant='contained'
@@ -79,10 +82,7 @@ const Collection = () => {
             Add Item
           </Button>
         )}
-      </div>
-      <Typography variant='h5' className={styles.collectionText}>
-        Collection Items
-      </Typography>
+      </Box>
       {isItemsLoading ? (
         <CircularProgress className={styles.progress} />
       ) : (

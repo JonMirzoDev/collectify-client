@@ -1,4 +1,4 @@
-import { TextField, Box, Typography, Paper } from '@mui/material'
+import { TextField, Box, Typography, Paper, Container } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import styles from './style.module.scss'
 import { LoadingButton } from '@mui/lab'
@@ -42,62 +42,71 @@ const AddItem = () => {
   }
 
   return (
-    <Box className={styles.addItem}>
-      <Paper elevation={3} className={styles.formContainer}>
-        <Typography variant='h5' component='h1' gutterBottom>
+    <Container>
+      <Box className={styles.addItem}>
+        <Typography
+          variant='h5'
+          component='h1'
+          gutterBottom
+          marginBottom={3}
+          marginTop={1}
+          fontWeight={550}
+        >
           Add New Item
         </Typography>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate autoComplete='off'>
-          <TextField
-            label='Item Name'
-            variant='outlined'
-            fullWidth
-            margin='normal'
-            required
-            {...register('name', { required: 'Item Name is required' })}
-            error={!!errors.name}
-            helperText={errors.name ? errors.name.message : ''}
-          />
-          <TextField
-            label='Description'
-            variant='outlined'
-            fullWidth
-            margin='normal'
-            required
-            multiline
-            rows={3}
-            {...register('description', {
-              required: 'Description is required'
-            })}
-            error={!!errors.description}
-            helperText={errors.description ? errors.description.message : ''}
-          />
-          <TextField
-            label='Tags (comma separated)'
-            variant='outlined'
-            fullWidth
-            margin='normal'
-            {...register('tags', { required: 'Tags are required' })}
-            error={!!errors.tags}
-            helperText={
-              errors.tags
-                ? errors.tags.message
-                : 'Enter tags separated by commas'
-            }
-          />
-          <Box textAlign='center' marginTop={2}>
-            <LoadingButton
-              type='submit'
-              variant='contained'
-              color='primary'
-              loading={isLoading}
-            >
-              Add Item
-            </LoadingButton>
-          </Box>
-        </form>
-      </Paper>
-    </Box>
+        <Paper elevation={3} className={styles.formContainer}>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate autoComplete='off'>
+            <TextField
+              label='Item Name'
+              variant='outlined'
+              fullWidth
+              margin='normal'
+              required
+              {...register('name', { required: 'Item Name is required' })}
+              error={!!errors.name}
+              helperText={errors.name ? errors.name.message : ''}
+            />
+            <TextField
+              label='Description'
+              variant='outlined'
+              fullWidth
+              margin='normal'
+              required
+              multiline
+              rows={3}
+              {...register('description', {
+                required: 'Description is required'
+              })}
+              error={!!errors.description}
+              helperText={errors.description ? errors.description.message : ''}
+            />
+            <TextField
+              label='Tags (comma separated)'
+              variant='outlined'
+              fullWidth
+              margin='normal'
+              {...register('tags', { required: 'Tags are required' })}
+              error={!!errors.tags}
+              helperText={
+                errors.tags
+                  ? errors.tags.message
+                  : 'Enter tags separated by commas'
+              }
+            />
+            <Box textAlign='center' marginTop={2}>
+              <LoadingButton
+                type='submit'
+                variant='contained'
+                color='primary'
+                loading={isLoading}
+              >
+                Add Item
+              </LoadingButton>
+            </Box>
+          </form>
+        </Paper>
+      </Box>
+    </Container>
   )
 }
 

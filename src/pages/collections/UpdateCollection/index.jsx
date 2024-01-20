@@ -64,11 +64,19 @@ const UpdateCollectionPage = () => {
   }
 
   return (
-    <Container component='main' maxWidth='sm' className={styles.container}>
+    <Container maxWidth='sm' className={styles.container}>
+      <Typography
+        component='h1'
+        variant='h5'
+        className={styles.header}
+        textAlign='center'
+        marginBottom={4}
+        marginTop={3}
+        fontWeight='550'
+      >
+        Update Collection
+      </Typography>
       <Paper elevation={6} className={styles.paper}>
-        <Typography component='h1' variant='h5' className={styles.header}>
-          Update Collection
-        </Typography>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <TextField
             label='Name'
