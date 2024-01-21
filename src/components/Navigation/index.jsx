@@ -16,6 +16,10 @@ const Navigation = () => {
   const { isAuth, user } = useSelector((store) => store.auth)
   const handleLogout = () => dispatch(logout())
 
+  const navigateToAdmin = () => {
+    navigate('/admin')
+  }
+
   return (
     <AppBar position='fixed' className={styles.navigationBar}>
       <Toolbar>
@@ -52,6 +56,11 @@ const Navigation = () => {
                 <AccountCircle />
                 <span className={styles.username}>{user.username}</span>
               </Box>
+              {user.isAdmin && (
+                <Button className={styles.button} onClick={navigateToAdmin}>
+                  Admin
+                </Button>
+              )}
               <Button className={styles.button} onClick={handleLogout}>
                 Logout
               </Button>

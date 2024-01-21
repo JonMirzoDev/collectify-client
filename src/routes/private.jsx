@@ -7,6 +7,7 @@ import UserPage from '../pages/UserPage'
 import AddItem from '../components/Items/AddItem'
 import EditItem from '../components/Items/EditItem'
 import BasicLayout from '../layouts/BasicLayout'
+import AdminPage from '../pages/AdminPage'
 
 export const privateRoutes = [
   ...commonRoutes,
@@ -32,8 +33,12 @@ export const privateRoutes = [
         ]
       },
       {
-        path: '/user',
+        path: 'user',
         element: <UserPage />
+      },
+      {
+        path: 'admin',
+        element: <AdminPage />
       },
       {
         path: 'collections/:collectionId/items/edit/:itemId',
