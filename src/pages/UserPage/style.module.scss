@@ -22,9 +22,9 @@
 
 .card {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transition: box-shadow 0.3s ease-in-out, transform 0.2s ease-in-out !important;
   &:hover {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
     transform: translateY(-5px);
   }
 }

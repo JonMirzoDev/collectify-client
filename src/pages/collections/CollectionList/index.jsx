@@ -12,6 +12,7 @@ import { useQueryClient } from 'react-query'
 import { LoadingButton } from '@mui/lab'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { truncateText } from '../../../utils'
 
 const CollectionList = ({ userId }) => {
   const { data: collections, isLoading } = useCollectionsQuery()
@@ -23,7 +24,6 @@ const CollectionList = ({ userId }) => {
   const isAdmin = user?.isAdmin
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-
 
   const handleDelete = (id, e) => {
     e.stopPropagation()
@@ -80,7 +80,7 @@ const CollectionList = ({ userId }) => {
                 {collection.name}
               </Typography>
               <Typography className={styles.description} color='text.secondary'>
-                {collection.description}
+                {truncateText(collection.description, 8)}
               </Typography>
 
               {((userId && userId === collection?.userId) || isAdmin) && (

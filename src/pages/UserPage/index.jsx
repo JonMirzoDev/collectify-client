@@ -20,6 +20,7 @@ import {
 import { LoadingButton } from '@mui/lab'
 import { useQueryClient } from 'react-query'
 import styles from './style.module.scss'
+import { truncateText } from '../../utils'
 
 const UserPage = () => {
   const { mutate: deleteCollection, isLoading: isDeleting } =
@@ -99,7 +100,7 @@ const UserPage = () => {
                     {collection.name}
                   </Typography>
                   <Typography variant='body2' color='text.secondary'>
-                    {collection.description}
+                    {truncateText(collection.description, 8)}
                   </Typography>
                 </CardContent>
               </CardActionArea>

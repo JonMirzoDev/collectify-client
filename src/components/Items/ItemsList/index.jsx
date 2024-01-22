@@ -18,6 +18,7 @@ import { useQueryClient } from 'react-query'
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { useDeleteItemAdmin } from '../../../services/admin.service'
+import { truncateText } from '../../../utils'
 
 const ItemsList = ({
   items = [],
@@ -112,10 +113,7 @@ const ItemsList = ({
           >
             <ListItemText
               primary={item.name}
-              secondary={`${item.description
-                .split(' ')
-                .slice(0, 2)
-                .join(' ')}...`}
+              secondary={truncateText(item.description, 6)}
             />
           </ListItem>
         ))}
