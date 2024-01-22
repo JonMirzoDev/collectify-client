@@ -19,7 +19,8 @@ const Collection = () => {
   const { data: items, isLoading: isItemsLoading } = useItems({
     collectionId: id
   })
-  const isOwner = isAuth && user.id === collection?.userId
+  const isAdmin = user?.isAdmin
+  const isOwner = (isAuth && user.id === collection?.userId) || isAdmin
   const navigate = useNavigate()
 
   if (isLoading) {

@@ -5,6 +5,7 @@ import { useCreateCollection } from '../../../services/collection.service'
 import { useQueryClient } from 'react-query'
 import toast from 'react-hot-toast'
 import { LoadingButton } from '@mui/lab'
+import { useNavigate } from 'react-router-dom'
 
 const CreateCollection = () => {
   const {
@@ -13,6 +14,7 @@ const CreateCollection = () => {
     reset,
     formState: { errors }
   } = useForm()
+  const navigate = useNavigate()
   const { mutate: create, isLoading } = useCreateCollection()
   const queryClient = useQueryClient()
 
@@ -23,6 +25,7 @@ const CreateCollection = () => {
         toast.success(`${data.name} Successfully created!`)
         queryClient.invalidateQueries('collections')
         reset()
+        navigate('/user')
       },
       onError: (err) => {
         console.log('create collection err: ', err)

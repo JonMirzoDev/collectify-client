@@ -8,18 +8,24 @@ import {
   useCollection,
   useUpdateCollection
 } from '../../../services/collection.service'
+import { useUpdateCollectionAdmin } from '../../../services/admin.service'
 import styles from './style.module.scss'
 import { LoadingButton } from '@mui/lab'
+import { useSelector } from 'react-redux'
 
 const UpdateCollectionPage = () => {
   const { id } = useParams()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
+  const { user } = useSelector((store) => store.auth)
+  const isAdmin = user?.isAdmin
   const { data: collection, isLoading: isLoadingCollection } = useCollection({
     id
   })
   const { mutate: updateCollection, isLoading: isUpdating } =
     useUpdateCollection()
+  const { mutate: updateCollectionAdmin, isLoading: isUpdatingAdmin } =
+    useUpdateCollectionAdmin()
   const {
     register,
     handleSubmit,
@@ -42,20 +48,37 @@ const UpdateCollectionPage = () => {
 
   const onSubmit = async (data) => {
     if (id) {
-      updateCollection(
-        { id, data },
-        {
-          onSuccess: (res) => {
-            queryClient.invalidateQueries(`collection-${id}`)
-            queryClient.refetchQueries('collections')
-            toast.success('Successfully updated.')
-            navigate('/')
-          },
-          onError: (error) => {
-            console.log('update error: ', error)
+      if (isAdmin) {
+        updateCollectionAdmin(
+          { id, data },
+          {
+            onSuccess: (res) => {
+              queryClient.invalidateQueries(`collection-${id}`)
+              queryClient.refetchQueries('collections')
+              toast.success('Successfully updated.')
+              navigate('/')
+            },
+            onError: (error) => {
+              console.log('update admin error: ', error)
+            }
           }
-        }
-      )
+        )
+      } else {
+        updateCollection(
+          { id, data },
+          {
+            onSuccess: (res) => {
+              queryClient.invalidateQueries(`collection-${id}`)
+              queryClient.refetchQueries('collections')
+              toast.success('Successfully updated.')
+              navigate('/')
+            },
+            onError: (error) => {
+              console.log('update error: ', error)
+            }
+          }
+        )
+      }
     }
   }
 

@@ -8,7 +8,35 @@ const adminService = {
   unblock: async (userId) => httpRequest.put(`users/${userId}/unblock`),
   makeAddmin: async (userId) => httpRequest.put(`users/${userId}/admin`),
   removeAddmin: async (userId) =>
-    httpRequest.put(`users/${userId}/admin/remove`)
+    httpRequest.put(`users/${userId}/admin/remove`),
+  deleteCollection: async (collectionId) =>
+    httpRequest.delete(`admin/collections/${collectionId}`),
+  update: async (data) =>
+    httpRequest.put(`admin/collections/${data.id}`, data.data),
+  createItem: async (data) => httpRequest.post('admin/items', data),
+  updateItem: async (data) =>
+    httpRequest.put(`admin/items/${data.itemId}`, data.updatedData),
+  deleteItem: async (itemId) => httpRequest.delete(`admin/items/${itemId}`)
+}
+
+export const useDeleteItemAdmin = (mutationSettings) => {
+  return useMutation(adminService.deleteItem, mutationSettings)
+}
+
+export const useUpdateItemAdmin = (mutationSettings) => {
+  return useMutation(adminService.updateItem, mutationSettings)
+}
+
+export const useCreateItemAdmin = (mutationSettings) => {
+  return useMutation(adminService.createItem, mutationSettings)
+}
+
+export const useUpdateCollectionAdmin = (mutationSettings) => {
+  return useMutation(adminService.update, mutationSettings)
+}
+
+export const useDeleteCollectionAdmin = (mutationSettings) => {
+  return useMutation(adminService.deleteCollection, mutationSettings)
 }
 
 export const useGetUsers = (querySettings) => {

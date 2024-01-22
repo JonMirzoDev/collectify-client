@@ -6,11 +6,15 @@ import { useCreateItem } from '../../../services/item.service'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useQueryClient } from 'react-query'
 import toast from 'react-hot-toast'
+import { useCreateItemAdmin } from '../../../services/admin.service'
+import { useSelector } from 'react-redux'
 
 const AddItem = () => {
   const { id } = useParams()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
+  const { user } = useSelector((store) => store.auth)
+  const isAdmin = user?.isAdmin
   const {
     register,
     handleSubmit,
@@ -18,6 +22,7 @@ const AddItem = () => {
     reset
   } = useForm()
   const { mutate: create, isLoading } = useCreateItem()
+  const { mutate: createAdmin, isLoadingAdmin } = useCreateItemAdmin()
 
   const onSubmit = (data) => {
     const tagsArray = data.tags.split(',').map((tag) => tag.trim())
@@ -27,17 +32,31 @@ const AddItem = () => {
         tags: tagsArray,
         collectionId: id
       }
-      create(itemData, {
-        onSuccess: (res) => {
-          queryClient.invalidateQueries(`items-by-${id}`)
-          toast.success('Successfully created!')
-          reset()
-          navigate(`/collections/${id}`)
-        },
-        onError: (err) => {
-          console.log('item create err: ', err)
-        }
-      })
+      if (isAdmin) {
+        createAdmin(itemData, {
+          onSuccess: (res) => {
+            queryClient.invalidateQueries(`items-by-${id}`)
+            toast.success('Successfully created!')
+            reset()
+            navigate(`/collections/${id}`)
+          },
+          onError: (err) => {
+            console.log('item create admin err: ', err)
+          }
+        })
+      } else {
+        create(itemData, {
+          onSuccess: (res) => {
+            queryClient.invalidateQueries(`items-by-${id}`)
+            toast.success('Successfully created!')
+            reset()
+            navigate(`/collections/${id}`)
+          },
+          onError: (err) => {
+            console.log('item create err: ', err)
+          }
+        })
+      }
     }
   }
 

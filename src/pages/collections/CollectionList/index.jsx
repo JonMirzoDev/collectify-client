@@ -3,37 +3,52 @@ import {
   useCollectionsQuery,
   useDeleteCollection
 } from '../../../services/collection.service'
-import { Button, Card, CardContent, Container, Typography } from '@mui/material'
+import { useDeleteCollectionAdmin } from '../../../services/admin.service'
+import { Card, CardContent, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import styles from './style.module.scss'
 import { useQueryClient } from 'react-query'
 import { LoadingButton } from '@mui/lab'
 import { useNavigate } from 'react-router-dom'
-import AddIcon from '@mui/icons-material/Add'
 import { useSelector } from 'react-redux'
 
 const CollectionList = ({ userId }) => {
   const { data: collections, isLoading } = useCollectionsQuery()
   const { mutate: deleteCollection, isLoading: isDeleting } =
     useDeleteCollection()
-  const { isAuth } = useSelector((store) => store.auth)
+  const { mutate: deleteCollectionAdmin, isLoading: isDeletingAdmin } =
+    useDeleteCollectionAdmin()
+  const { user } = useSelector((store) => store.auth)
+  const isAdmin = user?.isAdmin
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  console.log('collections: ', collections)
+
 
   const handleDelete = (id, e) => {
     e.stopPropagation()
-    if (!isDeleting)
-      deleteCollection(id, {
-        onSuccess: (res) => {
-          console.log('successfully deleted.')
-          queryClient.invalidateQueries('collections')
-        },
-        onError: (error) => {
-          console.log('delete err: ', error)
-        }
-      })
+    if ((!isDeleting || !isDeletingAdmin) && !!id)
+      if (isAdmin) {
+        deleteCollectionAdmin(id, {
+          onSuccess: (res) => {
+            console.log('successfully deleted.')
+            queryClient.invalidateQueries('collections')
+          },
+          onError: (error) => {
+            console.log('delete admin err: ', error)
+          }
+        })
+      } else {
+        deleteCollection(id, {
+          onSuccess: (res) => {
+            console.log('successfully deleted.')
+            queryClient.invalidateQueries('collections')
+          },
+          onError: (error) => {
+            console.log('delete err: ', error)
+          }
+        })
+      }
   }
 
   const handleUpdate = (id, e) => {
@@ -43,25 +58,10 @@ const CollectionList = ({ userId }) => {
 
   const handleCollectionClick = (id) => navigate(`/collections/${id}`)
 
-  const handleCreateNew = () => {
-    navigate('/collections/create')
-  }
-
   if (isLoading) return <div>Loading...</div>
 
   return (
     <>
-      {isAuth && (
-        <Button
-          variant='contained'
-          color='primary'
-          startIcon={<AddIcon />}
-          onClick={handleCreateNew}
-          className={styles.createButton}
-        >
-          Create Collection
-        </Button>
-      )}
       <div className={styles.collectionListContainer}>
         {collections?.map((collection) => (
           <Card
@@ -83,7 +83,7 @@ const CollectionList = ({ userId }) => {
                 {collection.description}
               </Typography>
 
-              {userId && userId === collection?.userId && (
+              {((userId && userId === collection?.userId) || isAdmin) && (
                 <div className={styles.actions}>
                   <LoadingButton
                     loading={isDeleting}

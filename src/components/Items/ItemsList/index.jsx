@@ -12,11 +12,12 @@ import {
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-
 import styles from './style.module.scss'
 import { useDeleteItem } from '../../../services/item.service'
 import { useQueryClient } from 'react-query'
 import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
+import { useDeleteItemAdmin } from '../../../services/admin.service'
 
 const ItemsList = ({
   items = [],
@@ -26,7 +27,11 @@ const ItemsList = ({
 }) => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const { user } = useSelector((store) => store.auth)
+  const isAdmin = user?.isAdmin
   const { mutate: deleteItem, isLoading: isDeleting } = useDeleteItem()
+  const { mutate: deleteItemAdmin, isLoading: isDeletingAdmin } =
+    useDeleteItemAdmin()
 
   if (loading) {
     return <Typography>Loading...</Typography>
@@ -42,15 +47,26 @@ const ItemsList = ({
 
   const onDelete = (itemId) => {
     if (itemId && collectionId) {
-      deleteItem(itemId, {
-        onSuccess: (res) => {
-          queryClient.invalidateQueries(`items-by-${collectionId}`)
-        },
-        onError: (err) => {
-          console.log('delete item err: ', err)
-          toast.error('Delete item error happened!')
-        }
-      })
+      if (isAdmin) {
+        deleteItemAdmin(itemId, {
+          onSuccess: (res) => {
+            queryClient.invalidateQueries(`items-by-${collectionId}`)
+          },
+          onError: (err) => {
+            console.log('delete item err admin: ', err)
+          }
+        })
+      } else {
+        deleteItem(itemId, {
+          onSuccess: (res) => {
+            queryClient.invalidateQueries(`items-by-${collectionId}`)
+          },
+          onError: (err) => {
+            console.log('delete item err: ', err)
+            toast.error('Delete item error happened!')
+          }
+        })
+      }
     }
   }
 
@@ -67,7 +83,11 @@ const ItemsList = ({
                     <IconButton
                       edge='end'
                       aria-label='edit'
-                      onClick={() => navigate(`/collections/${collectionId}/items/edit/${item.id}`)}
+                      onClick={() =>
+                        navigate(
+                          `/collections/${collectionId}/items/edit/${item.id}`
+                        )
+                      }
                     >
                       <EditIcon />
                     </IconButton>

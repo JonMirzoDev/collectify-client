@@ -46,7 +46,7 @@ const UserPage = () => {
       deleteCollection(id, {
         onSuccess: (res) => {
           console.log('successfully deleted.')
-          queryClient.invalidateQueries('collections')
+          queryClient.invalidateQueries('collections-by-user')
         },
         onError: (error) => {
           console.log('delete err: ', error)
@@ -75,7 +75,7 @@ const UserPage = () => {
             onClick={handleCreateNewCollection}
             className={styles.createButton}
           >
-            Create New Collection
+            Create Collection
           </Button>
         </Grid>
       </Grid>
