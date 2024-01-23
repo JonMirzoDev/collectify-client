@@ -9,7 +9,17 @@ const itemService = {
   create: async (data) => httpRequest.post('items', data),
   update: async (data) =>
     httpRequest.put(`items/${data.itemId}`, data.updatedData),
-  search: async (query) => httpRequest.get(`items/search?query=${query}`)
+  search: async (query) => httpRequest.get(`items/search?query=${query}`),
+  getAllItems: async () => httpRequest.get('items/all'),
+  getAllTags: async () => httpRequest.get('items/tags')
+}
+
+export const useGetAllTags = (querySettings) => {
+  return useQuery('get-all-tags', itemService.getAllTags, querySettings)
+}
+
+export const useGetAllItems = (querySettings) => {
+  return useQuery('get-all-items', itemService.getAllItems, querySettings)
 }
 
 export const useItems = ({ collectionId }) => {

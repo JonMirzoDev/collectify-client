@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -21,14 +21,17 @@ import { LoadingButton } from '@mui/lab'
 import { useQueryClient } from 'react-query'
 import styles from './style.module.scss'
 import { truncateText } from '../../utils'
+import { useSelector } from 'react-redux'
 
 const UserPage = () => {
   const { mutate: deleteCollection, isLoading: isDeleting } =
     useDeleteCollection()
   const queryClient = useQueryClient()
+  const { userId, userName, email } = useParams()
+  const { isAuth } = useSelector((store) => store.auth)
 
   const navigate = useNavigate()
-  const { data: collections, isLoading } = useCollectionsByUser()
+  const { data: collections, isLoading } = useCollectionsByUser({ userId })
 
   const handleCreateNewCollection = () => {
     navigate('/collections/create')
@@ -43,11 +46,11 @@ const UserPage = () => {
 
   const handleDelete = (id, e) => {
     e.stopPropagation()
-    if (!isDeleting)
+    if (!isDeleting && isAuth)
       deleteCollection(id, {
         onSuccess: (res) => {
           console.log('successfully deleted.')
-          queryClient.invalidateQueries('collections-by-user')
+          queryClient.invalidateQueries(`collections-by-${userId}`)
         },
         onError: (error) => {
           console.log('delete err: ', error)
@@ -65,19 +68,22 @@ const UserPage = () => {
         gutterBottom
         className={styles.pageTitle}
       >
-        My Page
+        User: {userName}
       </Typography>
+      <div>email: {email}</div>
       <Grid container spacing={2} justifyContent='flex-end' marginBottom='2rem'>
         <Grid item>
-          <Button
-            variant='contained'
-            color='primary'
-            startIcon={<AddIcon />}
-            onClick={handleCreateNewCollection}
-            className={styles.createButton}
-          >
-            Create Collection
-          </Button>
+          {isAuth && (
+            <Button
+              variant='contained'
+              color='primary'
+              startIcon={<AddIcon />}
+              onClick={handleCreateNewCollection}
+              className={styles.createButton}
+            >
+              Create Collection
+            </Button>
+          )}
         </Grid>
       </Grid>
       <Grid container spacing={2} className={styles.grid}>
@@ -104,23 +110,25 @@ const UserPage = () => {
                   </Typography>
                 </CardContent>
               </CardActionArea>
-              <CardActions className={styles.cardActions}>
-                <LoadingButton
-                  loading={isDeleting}
-                  onClick={(e) => handleDelete(collection?.id, e)}
-                  startIcon={<DeleteIcon />}
-                  aria-label='delete'
-                >
-                  Delete
-                </LoadingButton>
-                <Button
-                  startIcon={<EditIcon />}
-                  onClick={(e) => handleUpdate(collection.id, e)}
-                  className={styles.editButton}
-                >
-                  Edit
-                </Button>
-              </CardActions>
+              {isAuth && (
+                <CardActions className={styles.cardActions}>
+                  <LoadingButton
+                    loading={isDeleting}
+                    onClick={(e) => handleDelete(collection?.id, e)}
+                    startIcon={<DeleteIcon />}
+                    aria-label='delete'
+                  >
+                    Delete
+                  </LoadingButton>
+                  <Button
+                    startIcon={<EditIcon />}
+                    onClick={(e) => handleUpdate(collection.id, e)}
+                    className={styles.editButton}
+                  >
+                    Edit
+                  </Button>
+                </CardActions>
+              )}
             </Card>
           </Grid>
         ))}

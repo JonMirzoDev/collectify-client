@@ -14,6 +14,7 @@ const Navigation = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { isAuth, user } = useSelector((store) => store.auth)
+  console.log('user: ', user)
   const handleLogout = () => dispatch(logout())
 
   const navigateToAdmin = () => {
@@ -49,7 +50,9 @@ const Navigation = () => {
               <Box
                 aria-label='account of current user'
                 aria-haspopup='true'
-                onClick={() => navigate('/user')}
+                onClick={() =>
+                  navigate(`/users/${user.id}/${user.username}/${user.email}`)
+                }
                 color='inherit'
                 className={styles.logoBtn}
               >

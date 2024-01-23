@@ -33,10 +33,6 @@ export const privateRoutes = [
         ]
       },
       {
-        path: 'user',
-        element: <UserPage />
-      },
-      {
         path: 'admin',
         element: <AdminPage />
       },
