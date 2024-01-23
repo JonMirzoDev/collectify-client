@@ -13,7 +13,11 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import styles from './style.module.scss'
-import { useDeleteItem } from '../../../services/item.service'
+import {
+  useDeleteItem,
+  useDislikeItem,
+  useLikeItem
+} from '../../../services/item.service'
 import { useQueryClient } from 'react-query'
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
@@ -28,11 +32,13 @@ const ItemsList = ({
 }) => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { user } = useSelector((store) => store.auth)
+  const { user, isAuth } = useSelector((store) => store.auth)
   const isAdmin = user?.isAdmin
   const { mutate: deleteItem, isLoading: isDeleting } = useDeleteItem()
   const { mutate: deleteItemAdmin, isLoading: isDeletingAdmin } =
     useDeleteItemAdmin()
+  const { mutate: likeItem, isLoading: isLiking } = useLikeItem()
+  const { mutate: dislikeItem, isLoading: isDisliking } = useDislikeItem()
 
   if (loading) {
     return <Typography>Loading...</Typography>
@@ -65,6 +71,31 @@ const ItemsList = ({
           onError: (err) => {
             console.log('delete item err: ', err)
             toast.error('Delete item error happened!')
+          }
+        })
+      }
+    }
+  }
+
+  const handleLikeClick = (e, itemId, isLiked) => {
+    e.stopPropagation()
+    if (isAuth && !isLiking && !isDisliking) {
+      if (!isLiked) {
+        likeItem(itemId, {
+          onSuccess: (res) => {
+            queryClient.invalidateQueries(`items-by-${collectionId}`)
+          },
+          onError: (err) => {
+            console.log('like err: ', err)
+          }
+        })
+      } else {
+        dislikeItem(itemId, {
+          onSuccess: (res) => {
+            queryClient.invalidateQueries(`items-by-${collectionId}`)
+          },
+          onError: (err) => {
+            console.log('dislike err: ', err)
           }
         })
       }
@@ -111,6 +142,18 @@ const ItemsList = ({
               </Box>
             }
           >
+            <Box marginRight={3}>
+              <p>author: {item?.collection?.user?.username}</p>
+              <p>likeCount: {item?.likeCount}</p>
+              <p>likeStatus: {item?.likeStatus && 'liked'}</p>
+              <Box
+                margin='10px 0'
+                style={{ cursor: 'pointer' }}
+                onClick={(e) => handleLikeClick(e, item?.id, item?.likeStatus)}
+              >
+                likeIcon
+              </Box>
+            </Box>
             <ListItemText
               primary={item.name}
               secondary={truncateText(item.description, 6)}

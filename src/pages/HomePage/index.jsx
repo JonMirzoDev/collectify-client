@@ -65,7 +65,11 @@ export default function HomePage() {
         </Box>
         {tab === 'top_collections' && <CollectionList userId={user?.id} />}
         {tab === 'latest_items' && (
-          <LatestItems latestItems={latestItems} isLoading={isLoading} />
+          <LatestItems
+            latestItems={latestItems}
+            isLoading={isLoading}
+            query={query}
+          />
         )}
         {itemTags?.length > 0 && (
           <Box display='flex' gap={3} flexDirection='column' marginTop={3}>

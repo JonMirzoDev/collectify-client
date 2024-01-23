@@ -11,7 +11,17 @@ const itemService = {
     httpRequest.put(`items/${data.itemId}`, data.updatedData),
   search: async (query) => httpRequest.get(`items/search?query=${query}`),
   getAllItems: async () => httpRequest.get('items/all'),
-  getAllTags: async () => httpRequest.get('items/tags')
+  getAllTags: async () => httpRequest.get('items/tags'),
+  like: async (itemId) => httpRequest.post(`likes/${itemId}/like`),
+  dislike: async (itemId) => httpRequest.post(`likes/${itemId}/dislike`)
+}
+
+export const useDislikeItem = (mutationSettings) => {
+  return useMutation(itemService.dislike, mutationSettings)
+}
+
+export const useLikeItem = (mutationSettings) => {
+  return useMutation(itemService.like, mutationSettings)
 }
 
 export const useGetAllTags = (querySettings) => {
