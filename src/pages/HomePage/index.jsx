@@ -34,7 +34,11 @@ export default function HomePage() {
       <Container>
         <div className={styles.welcomeMessage}>
           Welcome to Collectify,{' '}
-          <span onClick={() => navigate('/user')}>
+          <span
+            onClick={() =>
+              navigate(`/users/${user.id}/${user.username}/${user.email}`)
+            }
+          >
             {user ? user.username : 'Guest'}
           </span>
         </div>

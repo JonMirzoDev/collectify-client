@@ -13,7 +13,29 @@ const itemService = {
   getAllItems: async () => httpRequest.get('items/all'),
   getAllTags: async () => httpRequest.get('items/tags'),
   like: async (itemId) => httpRequest.post(`likes/${itemId}/like`),
-  dislike: async (itemId) => httpRequest.post(`likes/${itemId}/dislike`)
+  dislike: async (itemId) => httpRequest.post(`likes/${itemId}/dislike`),
+  getComments: async (itemId) => httpRequest.get(`comments/item/${itemId}`),
+  deleteComment: async (commentId) =>
+    httpRequest.delete(`comments/${commentId}`),
+  createComment: async (data) => httpRequest.post('comments', data)
+}
+
+export const useCreateComment = (mutationSettings) => {
+  return useMutation(itemService.createComment, mutationSettings)
+}
+
+export const useDeleteComment = (mutationSettings) => {
+  return useMutation(itemService.deleteComment, mutationSettings)
+}
+
+export const useGetCommentsByItem = ({ itemId }) => {
+  return useQuery(
+    `comments-by-${itemId}`,
+    () => itemService.getComments(itemId),
+    {
+      enabled: !!itemId
+    }
+  )
 }
 
 export const useDislikeItem = (mutationSettings) => {
