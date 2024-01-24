@@ -59,7 +59,7 @@ const Comments = ({
       )}
 
       <List>
-        {comments.map((comment) => (
+        {comments?.map((comment) => (
           <ListItem key={comment.id} className={styles.commentItem}>
             <ListItemText primary={comment.text} />
             {((isAuth && comment.userId === user.id) || user?.isAdmin) && (
