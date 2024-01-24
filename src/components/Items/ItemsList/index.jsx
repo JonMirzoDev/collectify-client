@@ -12,6 +12,8 @@ import {
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import VisibilityIcon from '@mui/icons-material/Visibility'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import styles from './style.module.scss'
 import {
   useDeleteItem,
@@ -34,11 +36,10 @@ const ItemsList = ({
   const queryClient = useQueryClient()
   const { user, isAuth } = useSelector((store) => store.auth)
   const isAdmin = user?.isAdmin
-  const { mutate: deleteItem, isLoading: isDeleting } = useDeleteItem()
-  const { mutate: deleteItemAdmin, isLoading: isDeletingAdmin } =
-    useDeleteItemAdmin()
-  const { mutate: likeItem, isLoading: isLiking } = useLikeItem()
-  const { mutate: dislikeItem, isLoading: isDisliking } = useDislikeItem()
+  const { mutate: deleteItem } = useDeleteItem()
+  const { mutate: deleteItemAdmin } = useDeleteItemAdmin()
+  const { mutate: likeItem } = useLikeItem()
+  const { mutate: dislikeItem } = useDislikeItem()
 
   if (loading) {
     return <Typography>Loading...</Typography>
@@ -52,54 +53,49 @@ const ItemsList = ({
     navigate(`/items/${itemId}`)
   }
 
-  const onDelete = (itemId) => {
-    if (itemId && collectionId) {
-      if (isAdmin) {
-        deleteItemAdmin(itemId, {
-          onSuccess: (res) => {
-            queryClient.invalidateQueries(`items-by-${collectionId}`)
-          },
-          onError: (err) => {
-            console.log('delete item err admin: ', err)
-          }
-        })
-      } else {
-        deleteItem(itemId, {
-          onSuccess: (res) => {
-            queryClient.invalidateQueries(`items-by-${collectionId}`)
-          },
-          onError: (err) => {
-            console.log('delete item err: ', err)
-            toast.error('Delete item error happened!')
-          }
-        })
-      }
+  const handleDelete = (itemId, e) => {
+    e.stopPropagation()
+    if (isAdmin) {
+      deleteItemAdmin(itemId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(`items-by-${collectionId}`)
+          toast.success('Item successfully deleted.')
+        },
+        onError: () => {
+          toast.error('Error deleting item.')
+        }
+      })
+    } else {
+      deleteItem(itemId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(`items-by-${collectionId}`)
+          toast.success('Item successfully deleted.')
+        },
+        onError: () => {
+          toast.error('Error deleting item.')
+        }
+      })
     }
   }
 
   const handleLikeClick = (e, itemId, isLiked) => {
     e.stopPropagation()
-    if (isAuth && !isLiking && !isDisliking) {
-      if (!isLiked) {
-        likeItem(itemId, {
-          onSuccess: (res) => {
-            queryClient.invalidateQueries(`items-by-${collectionId}`)
-          },
-          onError: (err) => {
-            console.log('like err: ', err)
-          }
-        })
-      } else {
-        dislikeItem(itemId, {
-          onSuccess: (res) => {
-            queryClient.invalidateQueries(`items-by-${collectionId}`)
-          },
-          onError: (err) => {
-            console.log('dislike err: ', err)
-          }
-        })
-      }
+    if (isAuth) {
+      const action = isLiked ? dislikeItem : likeItem
+      action(itemId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(`items-by-${collectionId}`)
+        },
+        onError: () => {
+          toast.error('Error updating like status.')
+        }
+      })
     }
+  }
+
+  const handleEditClick = (e, collectionId, itemId) => {
+    e.stopPropagation()
+    navigate(`/collections/${collectionId}/items/edit/${itemId}`)
   }
 
   return (
@@ -107,31 +103,39 @@ const ItemsList = ({
       <List>
         {items.map((item) => (
           <ListItem
+            onClick={() => handleItemClick(item.id)}
+            className={styles.listItem}
             key={item.id}
             secondaryAction={
-              <Box display='flex' gap='15px'>
+              <Box display='flex' alignItems='center' gap='15px'>
+                <IconButton
+                  onClick={(e) => handleLikeClick(e, item.id, item.likeStatus)}
+                  aria-label='like'
+                >
+                  {item.likeStatus ? (
+                    <FavoriteIcon color='error' />
+                  ) : (
+                    <FavoriteBorderIcon />
+                  )}
+                  <Typography marginLeft={1}>{item?.likeCount}</Typography>
+                </IconButton>
                 {isOwner && (
-                  <Box display='flex' gap='15px'>
+                  <>
                     <IconButton
                       edge='end'
                       aria-label='edit'
-                      onClick={() =>
-                        navigate(
-                          `/collections/${collectionId}/items/edit/${item.id}`
-                        )
-                      }
+                      onClick={(e) => handleEditClick(e, collectionId, item.id)}
                     >
                       <EditIcon />
                     </IconButton>
                     <IconButton
                       edge='end'
                       aria-label='delete'
-                      onClick={() => onDelete(item.id)}
-                      disabled={isDeleting}
+                      onClick={(e) => handleDelete(item.id, e)}
                     >
                       <DeleteIcon />
                     </IconButton>
-                  </Box>
+                  </>
                 )}
                 <IconButton
                   onClick={() => handleItemClick(item.id)}
@@ -142,22 +146,15 @@ const ItemsList = ({
               </Box>
             }
           >
-            <Box marginRight={3}>
-              <p>author: {item?.collection?.user?.username}</p>
-              <p>likeCount: {item?.likeCount}</p>
-              <p>likeStatus: {item?.likeStatus && 'liked'}</p>
-              <Box
-                margin='10px 0'
-                style={{ cursor: 'pointer' }}
-                onClick={(e) => handleLikeClick(e, item?.id, item?.likeStatus)}
-              >
-                likeIcon
-              </Box>
-            </Box>
             <ListItemText
-              primary={item.name}
+              primary={truncateText(item.name, 6)}
               secondary={truncateText(item.description, 6)}
             />
+            <Box className={styles.authorDetails}>
+              <Typography variant='caption' display='block'>
+                Author: {item?.collection?.user?.username}
+              </Typography>
+            </Box>
           </ListItem>
         ))}
       </List>

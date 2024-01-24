@@ -6,6 +6,7 @@ import { useQueryClient } from 'react-query'
 import toast from 'react-hot-toast'
 import { LoadingButton } from '@mui/lab'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const CreateCollection = () => {
   const {
@@ -14,6 +15,7 @@ const CreateCollection = () => {
     reset,
     formState: { errors }
   } = useForm()
+  const { user } = useSelector((store) => store.auth)
   const navigate = useNavigate()
   const { mutate: create, isLoading } = useCreateCollection()
   const queryClient = useQueryClient()
@@ -23,9 +25,8 @@ const CreateCollection = () => {
     create(data, {
       onSuccess: (res) => {
         toast.success(`${data.name} Successfully created!`)
-        queryClient.invalidateQueries('collections')
         reset()
-        navigate('/user')
+        navigate(`/users/${user?.id}/${user?.username}/${user?.email}`)
       },
       onError: (err) => {
         console.log('create collection err: ', err)

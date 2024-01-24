@@ -1,5 +1,17 @@
 /* eslint-disable react/prop-types */
-import { Card, CardContent, Typography, Grid, Chip, Box } from '@mui/material'
+import React from 'react'
+import {
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Chip,
+  Box,
+  CircularProgress,
+  IconButton
+} from '@mui/material'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import styles from './style.module.scss'
 import { truncateText } from '../../../utils'
 import { useNavigate } from 'react-router-dom'
@@ -9,13 +21,24 @@ import { useQueryClient } from 'react-query'
 
 const LatestItems = ({ latestItems = [], isLoading = false, query = '' }) => {
   const navigate = useNavigate()
-  const { mutate: likeItem, isLoading: isLiking } = useLikeItem()
-  const { mutate: dislikeItem, isLoading: isDisliking } = useDislikeItem()
-  const { isAuth } = useSelector((store) => store.auth)
+  const { mutate: likeItem } = useLikeItem()
+  const { mutate: dislikeItem } = useDislikeItem()
+  const { isAuth } = useSelector((state) => state.auth)
   const queryClient = useQueryClient()
 
-  if (isLoading) {
-    return <div>Loading latest items...</div>
+  const handleLikeClick = (e, itemId, isLiked) => {
+    e.stopPropagation()
+    if (isAuth) {
+      const action = isLiked ? dislikeItem : likeItem
+      action(itemId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries('get-all-items')
+          queryClient.invalidateQueries(`search-items-${query}`)
+        }
+      })
+    } else {
+      navigate('/auth/login')
+    }
   }
 
   const handleAuthorClick = (e, userId, userName, email) => {
@@ -23,87 +46,78 @@ const LatestItems = ({ latestItems = [], isLoading = false, query = '' }) => {
     navigate(`/users/${userId}/${userName}/${email}`)
   }
 
-  const handleLikeClick = (e, itemId, isLiked) => {
-    e.stopPropagation()
-    if (isAuth && !isLiking && !isDisliking) {
-      if (!isLiked) {
-        likeItem(itemId, {
-          onSuccess: (res) => {
-            queryClient.invalidateQueries('get-all-items')
-            queryClient.invalidateQueries(`search-items-${query}`)
-          },
-          onError: (err) => {
-            console.log('like err: ', err)
-          }
-        })
-      } else {
-        dislikeItem(itemId, {
-          onSuccess: (res) => {
-            queryClient.invalidateQueries('get-all-items')
-            queryClient.invalidateQueries(`search-items-${query}`)
-          },
-          onError: (err) => {
-            console.log('dislike err: ', err)
-          }
-        })
-      }
-    }
+  if (isLoading) {
+    return (
+      <Box
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        minHeight='200px'
+      >
+        <CircularProgress />
+      </Box>
+    )
   }
 
   return (
-    <div className={styles.latestItemsContainer}>
-      <Grid container spacing={2}>
-        {latestItems.map((item) => (
-          <Grid item xs={12} sm={6} md={4} key={item.id}>
-            <Card
-              className={styles.itemCard}
-              onClick={() => navigate(`/items/${item.id}`)}
-            >
-              <CardContent>
-                <div
-                  onClick={(e) =>
-                    handleAuthorClick(
-                      e,
-                      item?.collection?.user?.id,
-                      item?.collection?.user?.username,
-                      item?.collection?.user?.email
-                    )
-                  }
-                >
-                  author: {item?.collection?.user?.username}
-                </div>
-                <Typography gutterBottom variant='h6' component='div'>
-                  {item.name}
+    <Grid container spacing={4} className={styles.latestItemsContainer}>
+      {latestItems.map((item) => (
+        <Grid item xs={12} sm={6} md={4} key={item.id}>
+          <Card
+            className={styles.itemCard}
+            onClick={() => navigate(`/items/${item.id}`)}
+          >
+            <CardContent className={styles.cardContent}>
+              <Box
+                className={styles.authorSection}
+                onClick={(e) =>
+                  handleAuthorClick(
+                    e,
+                    item.collection.user.id,
+                    item.collection.user.username,
+                    item.collection.user.email
+                  )
+                }
+              >
+                <Typography variant='subtitle2' component='div'>
+                  by: {item.collection.user.username}
                 </Typography>
-
-                <div>
-                  <p>likes: {item?.likeCount}</p>
-                  <p>likeStatus: {item.likeStatus && 'liked'}</p>
-                </div>
-
-                <Box
-                  margin='10px 0'
-                  onClick={(e) =>
-                    handleLikeClick(e, item?.id, item?.likeStatus)
-                  }
+              </Box>
+              <Typography gutterBottom variant='h5' component='div'>
+                {truncateText(item.name, 8)}
+              </Typography>
+              <Typography variant='body2' color='text.secondary'>
+                {truncateText(item.description, 8)}
+              </Typography>
+              <Box className={styles.tags}>
+                {item.tags.map((tag, index) => (
+                  <Chip
+                    key={index}
+                    label={tag}
+                    variant='outlined'
+                    className={styles.tag}
+                  />
+                ))}
+              </Box>
+              <Box className={styles.likeSection}>
+                <IconButton
+                  onClick={(e) => handleLikeClick(e, item.id, item.likeStatus)}
                 >
-                  likeIcon
-                </Box>
-
-                <Typography variant='body2' color='text.secondary'>
-                  {truncateText(item.description, 4)}
+                  {item.likeStatus ? (
+                    <FavoriteIcon color='error' />
+                  ) : (
+                    <FavoriteBorderIcon />
+                  )}
+                </IconButton>
+                <Typography variant='caption' marginLeft={-1}>
+                  {item.likeCount}
                 </Typography>
-                <div className={styles.tags}>
-                  {item.tags.map((tag, index) => (
-                    <Chip key={index} label={tag} className={styles.tag} />
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </div>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
   )
 }
 

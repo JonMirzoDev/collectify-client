@@ -28,7 +28,9 @@ const UserPage = () => {
     useDeleteCollection()
   const queryClient = useQueryClient()
   const { userId, userName, email } = useParams()
-  const { isAuth } = useSelector((store) => store.auth)
+  const { isAuth, user } = useSelector((store) => store.auth)
+  const isActionable = (isAuth && user.id == userId) || user?.isAdmin
+  console.log('user: ', isAuth, user);
 
   const navigate = useNavigate()
   const { data: collections, isLoading } = useCollectionsByUser({ userId })
@@ -70,10 +72,12 @@ const UserPage = () => {
       >
         User: {userName}
       </Typography>
-      <div>email: {email}</div>
+      <Typography variant='h6' component='div' className={styles.userDetails}>
+        <span className='email'>{email}</span>
+      </Typography>
       <Grid container spacing={2} justifyContent='flex-end' marginBottom='2rem'>
         <Grid item>
-          {isAuth && (
+          {isActionable && (
             <Button
               variant='contained'
               color='primary'
@@ -110,7 +114,7 @@ const UserPage = () => {
                   </Typography>
                 </CardContent>
               </CardActionArea>
-              {isAuth && (
+              {isActionable && (
                 <CardActions className={styles.cardActions}>
                   <LoadingButton
                     loading={isDeleting}

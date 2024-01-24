@@ -226,7 +226,7 @@ const ItemDetail = () => {
           {comments?.map((comment) => (
             <Box key={comment.id} margin='20px'>
               {comment.text}
-              {((isAuth && comment.userId === user.id) || user.isAdmin) && (
+              {((isAuth && comment.userId === user.id) || user?.isAdmin) && (
                 <button
                   style={{ marginLeft: 30, cursor: 'pointer' }}
                   onClick={() => handleDeleteComment(comment.id)}
