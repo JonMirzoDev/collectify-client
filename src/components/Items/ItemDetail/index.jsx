@@ -7,7 +7,8 @@ import {
   CircularProgress,
   Chip,
   Container,
-  IconButton
+  IconButton,
+  Tooltip
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -21,11 +22,14 @@ import {
   useItem,
   useLikeItem
 } from '../../../services/item.service'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 import { useSelector } from 'react-redux'
 import { useQueryClient } from 'react-query'
 import { useForm } from 'react-hook-form'
 import { useDeleteItemAdmin } from '../../../services/admin.service'
-import toast from 'react-hot-toast'
+import useItemDetails from '../../../hooks/useItemDetails'
+import Comments from './Comments'
 
 const ItemDetail = () => {
   const { itemId } = useParams()
@@ -53,8 +57,6 @@ const ItemDetail = () => {
     formState: { errors }
   } = useForm()
 
-  console.log('item: ', item)
-
   const onSubmit = (data) => {
     const commentData = { itemId, text: data.text }
     if (isAuth && !isCreatingComment) {
@@ -70,69 +72,29 @@ const ItemDetail = () => {
     }
   }
 
-  const handleLikeClick = (e, itemId, isLiked) => {
-    e.stopPropagation()
-    if (isAuth && !isLiking && !isDisliking) {
-      if (!isLiked) {
-        likeItem(itemId, {
-          onSuccess: (res) => {
-            queryClient.invalidateQueries(`item-${itemId}`)
-          },
-          onError: (err) => {
-            console.log('like err: ', err)
-          }
-        })
-      } else {
-        dislikeItem(itemId, {
-          onSuccess: (res) => {
-            queryClient.invalidateQueries(`item-${itemId}`)
-          },
-          onError: (err) => {
-            console.log('dislike err: ', err)
-          }
-        })
-      }
-    }
-  }
+  const { handleLikeClick, handleDeleteComment, onDelete } = useItemDetails({
+    isAuth,
+    isLiking,
+    isDisliking,
+    isDeletingComment,
+    itemId,
+    user,
+    item,
+    likeItem,
+    dislikeItem,
+    deleteComment,
+    deleteItemAdmin,
+    deleteItem
+  })
 
-  const handleDeleteComment = (commentId) => {
-    if (isAuth && !isDeletingComment && commentId) {
-      deleteComment(commentId, {
-        onSuccess: (res) => {
-          queryClient.invalidateQueries(`comments-by-${itemId}`)
-        },
-        onError: (err) => {
-          console.log('delelte comment err: ', err)
-        }
-      })
-    }
-  }
-
-  const onDelete = (itemId) => {
-    if (itemId && item.collectionId) {
-      if (user?.isAdmin) {
-        deleteItemAdmin(itemId, {
-          onSuccess: (res) => {
-            toast.success('Item deleted successfully!')
-            navigate(`/collections/${item.collectionId}`)
-          },
-          onError: (err) => {
-            console.log('delete item err admin: ', err)
-          }
-        })
-      } else {
-        deleteItem(itemId, {
-          onSuccess: (res) => {
-            toast.success('Item deleted successfully!')
-            navigate(`/collections/${item.collectionId}`)
-          },
-          onError: (err) => {
-            console.log('delete item err: ', err)
-            toast.error('Delete item error happened!')
-          }
-        })
-      }
-    }
+  const commentProps = {
+    isAuth,
+    handleSubmit,
+    onSubmit,
+    register,
+    comments,
+    user,
+    handleDeleteComment
   }
 
   if (isLoading) {
@@ -146,47 +108,28 @@ const ItemDetail = () => {
   return (
     <Container>
       <Box className={styles.itemView} marginTop={10}>
-        <Typography
-          marginBottom={2}
-          textAlign='center'
-          fontSize={36}
-          fontWeight={540}
-          fontFamily='fantasy'
-        >
-          Item details
+        <Typography variant='h4' gutterBottom className={styles.title}>
+          Item Details
         </Typography>
-        <Card variant='outlined'>
-          <CardContent>
-            <Typography variant='h5' component='h2'>
-              {item.name}
-            </Typography>
-            <Typography variant='body1'>{item.description}</Typography>
-            <Typography variant='overline' display='block'>
-              Tags:
-            </Typography>
-            {item.tags.map((tag, index) => (
-              <Chip key={index} label={tag} className={styles.tag} />
-            ))}
 
-            <Box marginTop={3}>
-              <p>author: {item?.collection?.user?.username}</p>
-              <p>likeCount: {item?.likeCount}</p>
-              <p>likeStatus: {item?.likeStatus && 'liked'}</p>
-              <Box
-                margin='10px 0'
-                style={{ cursor: 'pointer' }}
-                onClick={(e) => handleLikeClick(e, item?.id, item?.likeStatus)}
-              >
-                likeIcon
-              </Box>
-            </Box>
-
-            {((isAuth && item?.collection?.user?.id === user.id) ||
-              user?.isAdmin) && (
-              <Box display='flex' gap='15px'>
+        <Box className={styles.actions}>
+          <Tooltip title='Like'>
+            <IconButton
+              onClick={(e) => handleLikeClick(e, item?.id, item?.likeStatus)}
+            >
+              {item?.likeStatus ? (
+                <FavoriteIcon color='error' />
+              ) : (
+                <FavoriteBorderIcon />
+              )}{' '}
+              <Typography marginLeft={1}>{item?.likeCount}</Typography>
+            </IconButton>
+          </Tooltip>
+          {user?.isAdmin ||
+          (isAuth && item?.collection?.user?.id === user.id) ? (
+            <>
+              <Tooltip title='Edit'>
                 <IconButton
-                  edge='end'
-                  aria-label='edit'
                   onClick={() =>
                     navigate(
                       `/collections/${item.collectionId}/items/edit/${item.id}`
@@ -195,48 +138,55 @@ const ItemDetail = () => {
                 >
                   <EditIcon />
                 </IconButton>
+              </Tooltip>
+              <Tooltip title='Delete'>
                 <IconButton
-                  edge='end'
-                  aria-label='delete'
                   onClick={() => onDelete(item.id)}
                   disabled={isDeleting}
                 >
                   <DeleteIcon />
                 </IconButton>
-              </Box>
-            )}
+              </Tooltip>
+            </>
+          ) : null}
+        </Box>
+
+        <Card className={styles.card}>
+          <CardContent>
+            <Typography variant='h5' component='h2'>
+              {item.name}
+            </Typography>
+            <Typography
+              variant='body2'
+              color='textSecondary'
+              className={styles.description}
+            >
+              {item.description}
+            </Typography>
+            <Box className={styles.tags}>
+              {item.tags.map((tag, index) => (
+                <Chip key={index} label={tag} />
+              ))}
+            </Box>
+            <Typography
+              className={styles.author}
+              variant='body2'
+              color='textSecondary'
+              onClick={() =>
+                navigate(
+                  `/users/${item?.collection?.user?.id}/${item?.collection?.user?.username}/${item?.collection?.user?.email}`
+                )
+              }
+            >
+              Author: {item?.collection?.user?.username}
+            </Typography>
+            <Typography variant='body2' color='textSecondary'>
+              Likes: {item?.likeCount}
+            </Typography>
           </CardContent>
         </Card>
 
-        <Box marginTop={4}>
-          <h4>comments</h4>
-          {isAuth ? (
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <input
-                style={{ margin: 10, padding: 8 }}
-                type='text'
-                placeholder='create comment'
-                {...register('text', { required: true })}
-              />
-              <button>add comment</button>
-            </form>
-          ) : (
-            <p>Signin to add your comment</p>
-          )}
-          {comments?.map((comment) => (
-            <Box key={comment.id} margin='20px'>
-              {comment.text}
-              {((isAuth && comment.userId === user.id) || user?.isAdmin) && (
-                <button
-                  style={{ marginLeft: 30, cursor: 'pointer' }}
-                  onClick={() => handleDeleteComment(comment.id)}
-                >
-                  delete
-                </button>
-              )}
-            </Box>
-          ))}
-        </Box>
+        <Comments {...commentProps} />
       </Box>
     </Container>
   )

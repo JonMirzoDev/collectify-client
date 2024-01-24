@@ -1,7 +1,10 @@
 .editItem {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   margin-top: 2rem;
+  align-items: center;
+  gap: 20px;
 
   .formContainer {
     padding: 2rem;

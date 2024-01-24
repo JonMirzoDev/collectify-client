@@ -1,0 +1,30 @@
+.commentsSection {
+  margin-top: 2rem;
+
+  .commentsTitle {
+    margin-bottom: 1rem;
+  }
+
+  .commentForm {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .addComment {
+    white-space: nowrap !important; 
+  }
+
+  .signInPrompt {
+    margin-top: 1rem;
+    font-style: italic;
+  }
+
+  .commentItem {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
