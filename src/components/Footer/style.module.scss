@@ -1,0 +1,26 @@
+.footer {
+  padding: 1rem;
+  text-align: center;
+  background-color: #1976d2;
+  color: #fff;
+  width: 100%;
+
+  @media (min-height: 100vh) {
+    position: relative;
+    margin-top: auto;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
+
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+
+  .footer-item {
+    padding: 0.5rem;
+    color: #fff;
+    &:hover {
+      color: #bbdefb;
+    }
+  }
+}

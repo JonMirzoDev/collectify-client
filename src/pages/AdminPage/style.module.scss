@@ -1,0 +1,16 @@
+.tableContainer {
+  margin: 20px;
+  max-width: calc(100% - 40px);
+
+  .MuiTableCell-root {
+    padding: 16px;
+    &.MuiTableCell-head {
+      background-color: #eeeeee;
+    }
+  }
+
+  .MuiButtonGroup-root {
+    display: flex;
+    gap: 10px;
+  }
+}

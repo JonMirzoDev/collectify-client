@@ -1,0 +1,76 @@
+.navigationBar {
+  background-color: #1a237e;
+  color: #e8eaf6;
+  box-shadow: none;
+  .MuiToolbar-root {
+    justify-content: space-between;
+    padding: 0 2rem;
+  }
+}
+
+.title {
+  flex-grow: 1;
+  color: inherit;
+  font-weight: 600 !important;
+  font-size: 24px !important;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.searchContainer {
+  flex-grow: 2;
+  margin: 0 20px;
+  position: relative;
+}
+
+.authSection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.button,
+.logoBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 16px;
+  border: 2px solid #e8eaf6;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: none;
+
+  font-weight: bold;
+  color: inherit;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #c5cae9;
+  }
+
+  &.button {
+    background-color: #3949ab;
+    color: #fff;
+    text-transform: none;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: #c5cae9;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .logoBtn .username {
+    display: block;
+  }
+}
+
+.username {
+  color: inherit;
+  display: block;
+}

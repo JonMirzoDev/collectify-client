@@ -1,0 +1,23 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f0f4f8;
+  color: #333;
+
+  main {
+    flex: 1;
+    padding: 40px;
+    padding-top: 80px;
+    border-radius: 8px;
+    margin: 20px;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 768px) {
+  .app main {
+    margin: 10px;
+    padding: 10px;
+  }
+}
