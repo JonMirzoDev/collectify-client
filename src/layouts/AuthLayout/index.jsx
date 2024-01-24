@@ -6,7 +6,7 @@ const AuthLayout = () => {
   return (
     <div className={styles.container}>
       <Paper elevation={6} className={styles.paper}>
-        <div className={styles.logo}>collectify_logo</div>
+        <div className={styles.logo}>Collectify</div>
         <Outlet />
       </Paper>
     </div>
