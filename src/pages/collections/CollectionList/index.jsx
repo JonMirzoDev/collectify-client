@@ -57,6 +57,11 @@ const CollectionList = ({ userId }) => {
   }
 
   const handleCollectionClick = (id) => navigate(`/collections/${id}`)
+  const compactName = (name) => {
+    if (name.length > 6) {
+      return name.slice(0, 6) + '...'
+    }
+  }
 
   if (isLoading) return <div>Loading...</div>
 
@@ -77,7 +82,7 @@ const CollectionList = ({ userId }) => {
             )}
             <CardContent className={styles.cardContent}>
               <Typography variant='h5' component='div' className={styles.title}>
-                {collection.name}
+                {compactName(collection.name)}
               </Typography>
               <Typography className={styles.description} color='text.secondary'>
                 {truncateText(collection.description, 8)}

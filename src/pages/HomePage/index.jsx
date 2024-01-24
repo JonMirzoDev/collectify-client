@@ -22,6 +22,7 @@ export default function HomePage() {
   const { data: tagClickResults, isLoading: isTagResultsLoading } =
     useSearchItems({ query })
   const latestItems = query ? tagClickResults : allItems?.slice(0, 6)
+  const latestItemTags = itemTags?.slice(0, 6)
 
   const navigate = useNavigate()
 
@@ -93,7 +94,7 @@ export default function HomePage() {
               Item Tags
             </Typography>
             <div className={styles.tags}>
-              {itemTags?.map((itemTag, c) => (
+              {latestItemTags?.map((itemTag, c) => (
                 <span
                   key={c}
                   className={styles.tag}

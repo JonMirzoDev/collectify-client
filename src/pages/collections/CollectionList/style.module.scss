@@ -44,6 +44,9 @@
     margin: 10px 0;
     color: #333;
     font-size: 1.2em;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .description {

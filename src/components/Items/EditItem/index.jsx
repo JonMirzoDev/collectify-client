@@ -73,10 +73,10 @@ const EditItem = () => {
 
   return (
     <Box className={styles.editItem}>
+      <Typography variant='h5' fontSize={24} component='h1' gutterBottom fontWeight={550}>
+        Edit Item
+      </Typography>
       <Paper elevation={3} className={styles.formContainer}>
-        <Typography variant='h5' component='h1' gutterBottom>
-          Edit Item
-        </Typography>
         <form onSubmit={handleSubmit(onSubmit)} noValidate autoComplete='off'>
           <TextField
             label='Item Name'
