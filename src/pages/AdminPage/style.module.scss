@@ -2,6 +2,10 @@
   margin: 20px;
   max-width: calc(100% - 40px);
 
+  @media (max-width: 600px) {
+    max-width: 100%;
+  }
+
   .MuiTableCell-root {
     padding: 16px;
     &.MuiTableCell-head {
@@ -12,5 +16,11 @@
   .MuiButtonGroup-root {
     display: flex;
     gap: 10px;
+  }
+}
+
+.title {
+  @media (max-width: 600px) {
+    margin-top: 4rem !important;
   }
 }

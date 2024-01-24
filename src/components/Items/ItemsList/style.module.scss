@@ -77,3 +77,18 @@
   display: block;
   margin: 2rem auto;
 }
+
+
+.iconsBox {
+  @media (max-width: 600px) {
+    gap: 5px !important;
+    margin-right: -20px;
+    margin-bottom: -70px !important;
+  }
+}
+
+.likeBtn {
+  @media (max-width: 600px) {
+    margin-right: -12px !important;
+  }
+}

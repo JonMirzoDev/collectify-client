@@ -13,6 +13,10 @@
 
   .addComment {
     white-space: nowrap !important; 
+
+    @media (max-width: 600px) {
+      font-size: 9px !important;
+    }
   }
 
   .signInPrompt {

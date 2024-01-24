@@ -1,6 +1,10 @@
 .container {
   margin-right: auto !important;
   margin-left: auto !important;
+
+  @media (max-width: 600px) {
+    margin-top: 4rem !important;
+  }
 }
 
 .paper {

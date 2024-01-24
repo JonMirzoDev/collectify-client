@@ -7,6 +7,12 @@
   color: #1976d2;
   text-align: center;
   font-weight: bold;
+
+  @media (max-width: 600px) {
+    font-size: 24px !important;
+    margin-top: 2rem !important;
+    margin-bottom: -5px !important;
+  }
 }
 
 .userDetails {
@@ -22,6 +28,9 @@
 .createButton {
   margin-bottom: 2rem;
   background-color: #4caf50;
+  @media (max-width: 600px) {
+    margin-top: 1.5rem !important;
+  }
   &:hover {
     background-color: #388e3c;
   }

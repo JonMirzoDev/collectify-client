@@ -70,6 +70,7 @@ const AddItem = () => {
           marginBottom={3}
           marginTop={1}
           fontWeight={550}
+          className={styles.title}
         >
           Add New Item
         </Typography>

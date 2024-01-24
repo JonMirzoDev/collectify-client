@@ -74,6 +74,7 @@ const AdminPage = () => {
         textAlign='center'
         marginTop={4}
         marginBottom={3}
+        className={styles.title}
       >
         Admin Panel
       </Typography>

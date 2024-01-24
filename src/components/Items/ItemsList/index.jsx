@@ -107,10 +107,16 @@ const ItemsList = ({
             className={styles.listItem}
             key={item.id}
             secondaryAction={
-              <Box display='flex' alignItems='center' gap='15px'>
+              <Box
+                display='flex'
+                alignItems='center'
+                gap='15px'
+                className={styles.iconsBox}
+              >
                 <IconButton
                   onClick={(e) => handleLikeClick(e, item.id, item.likeStatus)}
                   aria-label='like'
+                  className={styles.likeBtn}
                 >
                   {item.likeStatus ? (
                     <FavoriteIcon color='error' />
@@ -148,7 +154,7 @@ const ItemsList = ({
           >
             <ListItemText
               primary={truncateText(item.name, 6)}
-              secondary={truncateText(item.description, 6)}
+              secondary={truncateText(item.description, 3)}
             />
             <Box className={styles.authorDetails}>
               <Typography variant='caption' display='block'>

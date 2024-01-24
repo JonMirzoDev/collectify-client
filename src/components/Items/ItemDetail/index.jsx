@@ -98,7 +98,16 @@ const ItemDetail = () => {
   }
 
   if (isLoading) {
-    return <CircularProgress />
+    return (
+      <Box
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        minHeight='100vh'
+      >
+        <CircularProgress />
+      </Box>
+    )
   }
 
   if (error) {
