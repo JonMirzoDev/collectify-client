@@ -33,6 +33,7 @@ const CollectionList = ({ userId }) => {
           onSuccess: (res) => {
             console.log('successfully deleted.')
             queryClient.invalidateQueries('collections')
+            queryClient.invalidateQueries('get-all-items')
           },
           onError: (error) => {
             console.log('delete admin err: ', error)
@@ -43,6 +44,7 @@ const CollectionList = ({ userId }) => {
           onSuccess: (res) => {
             console.log('successfully deleted.')
             queryClient.invalidateQueries('collections')
+            queryClient.invalidateQueries('get-all-items')
           },
           onError: (error) => {
             console.log('delete err: ', error)
