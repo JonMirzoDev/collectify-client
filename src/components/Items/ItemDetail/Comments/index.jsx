@@ -63,7 +63,7 @@ const Comments = ({
           <ListItem key={comment.id} className={styles.commentItem}>
             <ListItemText primary={comment.text} />
             {((isAuth && comment.userId === user.id) || user?.isAdmin) && (
-              <Tooltip title='Delete'>
+              <Tooltip title='Delete' placement='right'>
                 <IconButton onClick={() => handleDeleteComment(comment.id)}>
                   <DeleteIcon />
                 </IconButton>

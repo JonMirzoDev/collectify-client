@@ -4,7 +4,13 @@ import {
   useDeleteCollection
 } from '../../../services/collection.service'
 import { useDeleteCollectionAdmin } from '../../../services/admin.service'
-import { Card, CardContent, Typography } from '@mui/material'
+import {
+  Box,
+  Card,
+  CardContent,
+  CircularProgress,
+  Typography
+} from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import styles from './style.module.scss'
@@ -65,7 +71,17 @@ const CollectionList = ({ userId }) => {
     }
   }
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading)
+    return (
+      <Box
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        minHeight='40vh'
+      >
+        <CircularProgress />
+      </Box>
+    )
 
   return (
     <>

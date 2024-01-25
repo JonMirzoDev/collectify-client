@@ -1,11 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import {
+  Box,
   Button,
   Card,
   CardActionArea,
   CardActions,
   CardContent,
   CardMedia,
+  CircularProgress,
   Container,
   Grid,
   Typography
@@ -30,7 +32,7 @@ const UserPage = () => {
   const { userId, userName, email } = useParams()
   const { isAuth, user } = useSelector((store) => store.auth)
   const isActionable = (isAuth && user.id == userId) || user?.isAdmin
-  console.log('user: ', isAuth, user);
+  console.log('user: ', isAuth, user)
 
   const navigate = useNavigate()
   const { data: collections, isLoading } = useCollectionsByUser({ userId })
@@ -60,8 +62,6 @@ const UserPage = () => {
       })
   }
 
-  if (isLoading) return <div>Loading...</div>
-
   return (
     <Container maxWidth='lg' className={styles.container}>
       <Typography
@@ -90,53 +90,64 @@ const UserPage = () => {
           )}
         </Grid>
       </Grid>
-      <Grid container spacing={2} className={styles.grid}>
-        {collections?.map((collection) => (
-          <Grid item xs={12} sm={6} md={4} key={collection.id}>
-            <Card className={styles.card}>
-              <CardActionArea
-                onClick={() => handleCollectionClick(collection?.id)}
-              >
-                {collection.image && (
-                  <CardMedia
-                    component='img'
-                    image={collection.image}
-                    alt={collection.name}
-                    className={styles.media}
-                  />
+      {isLoading ? (
+        <Box
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          minHeight='60vh'
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Grid container spacing={2} className={styles.grid}>
+          {collections?.map((collection) => (
+            <Grid item xs={12} sm={6} md={4} key={collection.id}>
+              <Card className={styles.card}>
+                <CardActionArea
+                  onClick={() => handleCollectionClick(collection?.id)}
+                >
+                  {collection.image && (
+                    <CardMedia
+                      component='img'
+                      image={collection.image}
+                      alt={collection.name}
+                      className={styles.media}
+                    />
+                  )}
+                  <CardContent>
+                    <Typography gutterBottom variant='h5' component='div'>
+                      {collection.name}
+                    </Typography>
+                    <Typography variant='body2' color='text.secondary'>
+                      {truncateText(collection.description, 8)}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                {isActionable && (
+                  <CardActions className={styles.cardActions}>
+                    <LoadingButton
+                      loading={isDeleting}
+                      onClick={(e) => handleDelete(collection?.id, e)}
+                      startIcon={<DeleteIcon />}
+                      aria-label='delete'
+                    >
+                      Delete
+                    </LoadingButton>
+                    <Button
+                      startIcon={<EditIcon />}
+                      onClick={(e) => handleUpdate(collection.id, e)}
+                      className={styles.editButton}
+                    >
+                      Edit
+                    </Button>
+                  </CardActions>
                 )}
-                <CardContent>
-                  <Typography gutterBottom variant='h5' component='div'>
-                    {collection.name}
-                  </Typography>
-                  <Typography variant='body2' color='text.secondary'>
-                    {truncateText(collection.description, 8)}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              {isActionable && (
-                <CardActions className={styles.cardActions}>
-                  <LoadingButton
-                    loading={isDeleting}
-                    onClick={(e) => handleDelete(collection?.id, e)}
-                    startIcon={<DeleteIcon />}
-                    aria-label='delete'
-                  >
-                    Delete
-                  </LoadingButton>
-                  <Button
-                    startIcon={<EditIcon />}
-                    onClick={(e) => handleUpdate(collection.id, e)}
-                    className={styles.editButton}
-                  >
-                    Edit
-                  </Button>
-                </CardActions>
-              )}
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Container>
   )
 }

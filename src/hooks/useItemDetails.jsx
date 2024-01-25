@@ -24,7 +24,7 @@ const useItemDetails = ({
     if (!isAuth) {
       navigate('/auth/login')
     }
-    if (isAuth && !isLiking && !isDisliking) {
+    if (isAuth && (!isLiking || !isDisliking)) {
       if (!isLiked) {
         likeItem(itemId, {
           onSuccess: (res) => {

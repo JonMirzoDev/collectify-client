@@ -73,7 +73,13 @@ const EditItem = () => {
 
   return (
     <Box className={styles.editItem}>
-      <Typography variant='h5' fontSize={24} component='h1' gutterBottom fontWeight={550}>
+      <Typography
+        variant='h5'
+        fontSize={24}
+        component='h1'
+        gutterBottom
+        fontWeight={550}
+      >
         Edit Item
       </Typography>
       <Paper elevation={3} className={styles.formContainer}>
@@ -108,7 +114,7 @@ const EditItem = () => {
               type='submit'
               variant='contained'
               color='primary'
-              loading={isUpdating}
+              loading={isUpdating || isUpdatingAdmin}
             >
               Update Item
             </LoadingButton>

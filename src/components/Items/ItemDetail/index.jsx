@@ -122,7 +122,7 @@ const ItemDetail = () => {
         </Typography>
 
         <Box className={styles.actions}>
-          <Tooltip title='Like'>
+          <Tooltip title='Like' placement='top'>
             <IconButton
               onClick={(e) => handleLikeClick(e, item?.id, item?.likeStatus)}
             >
@@ -137,7 +137,7 @@ const ItemDetail = () => {
           {user?.isAdmin ||
           (isAuth && item?.collection?.user?.id === user.id) ? (
             <>
-              <Tooltip title='Edit'>
+              <Tooltip title='Edit' placement='top'>
                 <IconButton
                   onClick={() =>
                     navigate(
@@ -148,10 +148,10 @@ const ItemDetail = () => {
                   <EditIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title='Delete'>
+              <Tooltip title='Delete' placement='top'>
                 <IconButton
                   onClick={() => onDelete(item.id)}
-                  disabled={isDeleting}
+                  disabled={isDeleting || isDeletingAdmin}
                 >
                   <DeleteIcon />
                 </IconButton>

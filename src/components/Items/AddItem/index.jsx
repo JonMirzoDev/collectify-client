@@ -118,7 +118,7 @@ const AddItem = () => {
                 type='submit'
                 variant='contained'
                 color='primary'
-                loading={isLoading}
+                loading={isLoading || isLoadingAdmin}
               >
                 Add Item
               </LoadingButton>
